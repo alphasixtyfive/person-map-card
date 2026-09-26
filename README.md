@@ -19,7 +19,7 @@ type: custom:person-map-card
 person: person.example
 ```
 
-That is enough to show a map and the available person details. A missing battery or GPS reading is omitted. Informational tiles do not open dialogs when tapped; the person heading opens native more-info.
+That is enough to show a map and the available person details. A missing battery or GPS reading is omitted. When a person has no usable location, the card shows a clear empty state in place of the map. Informational tiles do not open dialogs when tapped; the person heading opens native more-info.
 
 ## Options
 

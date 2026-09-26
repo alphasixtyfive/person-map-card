@@ -1,5 +1,5 @@
 import css from "./styles.css";
-import { normalizeConfig, personDetails } from "./model.js";
+import { normalizeConfig, personDetails, personHasLocation } from "./model.js";
 
 let helpersPromise;
 function cardHelpers() {
@@ -22,7 +22,7 @@ export class PersonMapCard extends HTMLElement {
         <div class="layout">
           <div class="map-pane"><div class="map-inner">
             <div class="map-host"></div>
-            <div class="map-status" role="status"><span>Loading map…</span><button type="button" hidden>Try again</button></div>
+            <div class="map-status" role="status"><ha-icon icon="mdi:map-marker-off" hidden></ha-icon><span>Loading map…</span><button type="button" hidden>Try again</button></div>
           </div></div>
           <div class="panel">
             <button class="person-heading" type="button">
@@ -42,6 +42,7 @@ export class PersonMapCard extends HTMLElement {
     this._mapInner = this.shadowRoot.querySelector(".map-inner");
     this._mapHost = this.shadowRoot.querySelector(".map-host");
     this._mapStatus = this.shadowRoot.querySelector(".map-status");
+    this._mapStatusIcon = this._mapStatus.querySelector("ha-icon");
     this._mapStatusText = this._mapStatus.querySelector("span");
     this._retry = this._mapStatus.querySelector("button");
     this._heading = this.shadowRoot.querySelector(".person-heading");
@@ -67,25 +68,29 @@ export class PersonMapCard extends HTMLElement {
     this._renderDetails();
     if (oldMapKey !== this._mapKey()) {
       this._request += 1;
+      clearTimeout(this._mapTimer);
       this._mapCard = undefined;
       this._mapSize = undefined;
+      this._canMap = undefined;
       this._mapHost.replaceChildren();
       this._showMapStatus("Loading map…");
-      this._scheduleMap(true);
     }
+    this._syncMapAvailability();
   }
 
   set hass(hass) {
     this._hass = hass;
     if (this._mapCard) this._mapCard.hass = hass;
     this._renderDetails();
+    this._syncMapAvailability();
   }
   get hass() { return this._hass; }
 
   connectedCallback() {
     this._resizeObserver = new ResizeObserver(() => this._scheduleMap());
     this._resizeObserver.observe(this._mapInner);
-    this._scheduleMap(true);
+    this._syncMapAvailability();
+    if (this._canMap) this._scheduleMap(true);
     this._clock = setInterval(() => this._renderDetails(), 60_000);
   }
 
@@ -112,13 +117,29 @@ export class PersonMapCard extends HTMLElement {
 
   _showMapStatus(message, retry = false) {
     this._mapStatusText.textContent = message;
+    this._mapStatusIcon.hidden = message !== "Location unavailable";
     this._mapStatus.hidden = false;
     this._retry.hidden = !retry;
   }
 
+  _syncMapAvailability() {
+    if (!this._config || !this._hass) return;
+    const canMap = personHasLocation(this._hass.states?.[this._config.person]);
+    if (canMap === this._canMap) return;
+    this._canMap = canMap;
+    this._request += 1;
+    clearTimeout(this._mapTimer);
+    this._mapTimer = undefined;
+    this._mapCard = undefined;
+    this._mapSize = undefined;
+    this._mapHost.replaceChildren();
+    this._showMapStatus(canMap ? "Loading map…" : "Location unavailable");
+    if (canMap) this._scheduleMap(true);
+  }
+
   _scheduleMap(force = false) {
     clearTimeout(this._mapTimer);
-    if (!this.isConnected || !this._config) return;
+    if (!this.isConnected || !this._config || !this._canMap) return;
     const size = this._dimensions();
     if (size.width < 100 || size.height < 100) return;
     if (!force && this._mapCard && this._mapSize && Math.abs(this._mapSize.width - size.width) < 4 && Math.abs(this._mapSize.height - size.height) < 4) return;
@@ -127,6 +148,7 @@ export class PersonMapCard extends HTMLElement {
   }
 
   async _mountMap(request, size) {
+    this._mapTimer = undefined;
     const current = () => this.isConnected && request === this._request;
     try {
       const helpers = await cardHelpers();

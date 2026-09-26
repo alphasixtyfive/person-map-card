@@ -1,7 +1,7 @@
 /* Generated from src/. Edit the source files, then run npm run build. */
 (() => {
   // src/styles.css
-  var styles_default = ":host {\n  display: block;\n  width: calc(100% - 32px);\n  min-width: 0;\n  margin: 16px auto;\n  container-type: inline-size;\n}\n\n:host([full-view]) { width: 100%; margin: 0; }\n\n* { box-sizing: border-box; }\n[hidden] { display: none !important; }\n\nha-card {\n  display: block;\n  height: calc(100dvh - 88px);\n  min-height: 480px;\n  overflow: hidden;\n  border: 1px solid var(--divider-color);\n  border-radius: 18px;\n}\n\n:host([full-view]) ha-card {\n  height: calc(100dvh - 56px);\n  min-height: 0;\n  border: 0;\n  border-radius: 0;\n  box-shadow: none;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) clamp(320px, 36%, 410px);\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n}\n\n.map-pane {\n  min-width: 0;\n  min-height: 0;\n}\n\n.map-inner {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n  overflow: hidden;\n  background: var(--primary-background-color);\n}\n\n.map-host {\n  --ha-card-border-radius: 0;\n  --ha-card-border-width: 0;\n  --ha-card-box-shadow: none;\n}\n\n.map-host, .map-host > * {\n  display: block;\n  width: 100%;\n}\n\n.map-status {\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-content: center;\n  justify-items: center;\n  gap: 12px;\n  padding: 24px;\n  color: var(--secondary-text-color);\n  text-align: center;\n}\n\n.map-status button {\n  min-height: 44px;\n  padding: 0 16px;\n  border: 1px solid var(--divider-color);\n  border-radius: 12px;\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n  font: inherit;\n  cursor: pointer;\n}\n\n.panel {\n  min-width: 0;\n  min-height: 0;\n  padding: 24px;\n  overflow: auto;\n  border-left: 1px solid var(--divider-color);\n}\n\nbutton { font: inherit; cursor: pointer; }\nbutton:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }\n\n.person-heading {\n  display: flex;\n  align-items: center;\n  gap: 14px;\n  width: 100%;\n  min-height: 64px;\n  margin: 0 0 24px;\n  padding: 8px 16px;\n  border: 0;\n  border-radius: 16px;\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n\n.avatar {\n  display: grid;\n  place-items: center;\n  flex: 0 0 52px;\n  width: 52px;\n  height: 52px;\n  overflow: hidden;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-background-color));\n  color: var(--primary-color);\n}\n\n.avatar img { width: 100%; height: 100%; object-fit: cover; }\n.avatar ha-icon { --mdc-icon-size: 28px; }\n.identity { min-width: 0; flex: 1; }\n.identity strong { display: block; font-size: 20px; line-height: 26px; overflow-wrap: anywhere; }\n.identity span { display: block; color: var(--secondary-text-color); font-size: 14px; line-height: 22px; }\n.chevron { flex: 0 0 auto; color: var(--secondary-text-color); --mdc-icon-size: 20px; }\n\n.section-label {\n  margin: 0 0 12px;\n  font-size: 15px;\n  font-weight: 600;\n  line-height: 20px;\n  color: var(--primary-text-color);\n}\n\n.section + .section { margin-top: 22px; }\n.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }\n.tiles > .tile:only-child { grid-column: 1 / -1; }\n.tile {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-width: 0;\n  min-height: 76px;\n  padding: 10px 12px;\n  border: 1px solid var(--divider-color);\n  border-radius: 14px;\n  background: color-mix(in srgb, var(--primary-text-color) 3%, var(--card-background-color));\n  color: var(--primary-text-color);\n  text-align: left;\n}\n.tile-action { cursor: pointer; }\n.tile-action:hover, .person-heading:hover {\n  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));\n}\n.tile ha-icon {\n  display: grid;\n  place-items: center;\n  flex: 0 0 36px;\n  width: 36px;\n  height: 36px;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 12%, var(--card-background-color));\n  color: var(--primary-color);\n  --mdc-icon-size: 20px;\n}\n.tile span { display: block; min-width: 0; flex: 1; }\n.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 600; }\n.tile small { display: block; color: var(--secondary-text-color); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }\n\n.actions { margin-top: 22px; }\n.action-list { display: flex; flex-wrap: wrap; gap: 8px; }\n.service-action {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  min-height: 44px;\n  padding: 0 14px;\n  border: 1px solid var(--divider-color);\n  border-radius: 12px;\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n}\n.service-action:hover:not(:disabled) {\n  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));\n}\n.service-action:disabled { cursor: default; opacity: .55; }\n.service-action ha-icon { color: var(--primary-color); --mdc-icon-size: 20px; }\n.action-feedback { margin: 8px 0 0; color: var(--secondary-text-color); font-size: 12px; }\n.action-feedback:empty { display: none; }\n\n@container (max-width: 720px) {\n  ha-card { height: auto; min-height: 0; }\n  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }\n  .layout { display: block; height: auto; }\n  .map-pane { height: clamp(320px, 45dvh, 500px); }\n  .panel { padding: 16px; border-left: 0; border-top: 1px solid var(--divider-color); }\n  .person-heading { margin-bottom: 16px; }\n  .tile { min-height: 68px; }\n}\n\n@container (max-width: 360px) {\n  .tiles { gap: 8px; }\n  .tile { padding: 8px; }\n}\n";
+  var styles_default = ":host {\n  display: block;\n  width: calc(100% - 32px);\n  min-width: 0;\n  margin: 16px auto;\n  container-type: inline-size;\n}\n\n:host([full-view]) { width: 100%; margin: 0; }\n\n* { box-sizing: border-box; }\n[hidden] { display: none !important; }\n\nha-card {\n  display: block;\n  height: calc(100dvh - 88px);\n  min-height: 480px;\n  overflow: hidden;\n  border: 1px solid var(--divider-color);\n  border-radius: 18px;\n}\n\n:host([full-view]) ha-card {\n  height: calc(100dvh - 56px);\n  min-height: 0;\n  border: 0;\n  border-radius: 0;\n  box-shadow: none;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) clamp(320px, 36%, 410px);\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n}\n\n.map-pane {\n  min-width: 0;\n  min-height: 0;\n}\n\n.map-inner {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n  overflow: hidden;\n  background: var(--primary-background-color);\n}\n\n.map-host {\n  --ha-card-border-radius: 0;\n  --ha-card-border-width: 0;\n  --ha-card-box-shadow: none;\n}\n\n.map-host, .map-host > * {\n  display: block;\n  width: 100%;\n}\n\n.map-status {\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-content: center;\n  justify-items: center;\n  gap: 12px;\n  padding: 24px;\n  color: var(--secondary-text-color);\n  text-align: center;\n}\n\n.map-status ha-icon { --mdc-icon-size: 48px; }\n\n.map-status button {\n  min-height: 44px;\n  padding: 0 16px;\n  border: 1px solid var(--divider-color);\n  border-radius: 12px;\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n  font: inherit;\n  cursor: pointer;\n}\n\n.panel {\n  min-width: 0;\n  min-height: 0;\n  padding: 24px;\n  overflow: auto;\n  border-left: 1px solid var(--divider-color);\n}\n\nbutton { font: inherit; cursor: pointer; }\nbutton:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }\n\n.person-heading {\n  display: flex;\n  align-items: center;\n  gap: 14px;\n  width: 100%;\n  min-height: 64px;\n  margin: 0 0 24px;\n  padding: 8px 16px;\n  border: 0;\n  border-radius: 16px;\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n\n.avatar {\n  display: grid;\n  place-items: center;\n  flex: 0 0 52px;\n  width: 52px;\n  height: 52px;\n  overflow: hidden;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-background-color));\n  color: var(--primary-color);\n}\n\n.avatar img { width: 100%; height: 100%; object-fit: cover; }\n.avatar ha-icon { --mdc-icon-size: 28px; }\n.identity { min-width: 0; flex: 1; }\n.identity strong { display: block; font-size: 20px; line-height: 26px; overflow-wrap: anywhere; }\n.identity span { display: block; color: var(--secondary-text-color); font-size: 14px; line-height: 22px; }\n.chevron { flex: 0 0 auto; color: var(--secondary-text-color); --mdc-icon-size: 20px; }\n\n.section-label {\n  margin: 0 0 12px;\n  font-size: 15px;\n  font-weight: 600;\n  line-height: 20px;\n  color: var(--primary-text-color);\n}\n\n.section + .section { margin-top: 22px; }\n.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }\n.tiles > .tile:only-child { grid-column: 1 / -1; }\n.tile {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-width: 0;\n  min-height: 76px;\n  padding: 10px 12px;\n  border: 1px solid var(--divider-color);\n  border-radius: 14px;\n  background: color-mix(in srgb, var(--primary-text-color) 3%, var(--card-background-color));\n  color: var(--primary-text-color);\n  text-align: left;\n}\n.tile-action { cursor: pointer; }\n.tile-action:hover, .person-heading:hover {\n  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));\n}\n.tile ha-icon {\n  display: grid;\n  place-items: center;\n  flex: 0 0 36px;\n  width: 36px;\n  height: 36px;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 12%, var(--card-background-color));\n  color: var(--primary-color);\n  --mdc-icon-size: 20px;\n}\n.tile span { display: block; min-width: 0; flex: 1; }\n.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 600; }\n.tile small { display: block; color: var(--secondary-text-color); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }\n\n.actions { margin-top: 22px; }\n.action-list { display: flex; flex-wrap: wrap; gap: 8px; }\n.service-action {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  min-height: 44px;\n  padding: 0 14px;\n  border: 1px solid var(--divider-color);\n  border-radius: 12px;\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n}\n.service-action:hover:not(:disabled) {\n  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));\n}\n.service-action:disabled { cursor: default; opacity: .55; }\n.service-action ha-icon { color: var(--primary-color); --mdc-icon-size: 20px; }\n.action-feedback { margin: 8px 0 0; color: var(--secondary-text-color); font-size: 12px; }\n.action-feedback:empty { display: none; }\n\n@container (max-width: 720px) {\n  ha-card { height: auto; min-height: 0; }\n  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }\n  .layout { display: block; height: auto; }\n  .map-pane { height: clamp(320px, 45dvh, 500px); }\n  .panel { padding: 16px; border-left: 0; border-top: 1px solid var(--divider-color); }\n  .person-heading { margin-bottom: 16px; }\n  .tile { min-height: 68px; }\n}\n\n@container (max-width: 360px) {\n  .tiles { gap: 8px; }\n  .tile { padding: 8px; }\n}\n";
 
   // src/model.js
   var entityId = /^[a-z0-9_]+\.[a-z0-9_]+$/;
@@ -124,6 +124,9 @@
     if (state === "not_home") return "Away";
     return String(state).replaceAll("_", " ");
   }
+  function personHasLocation(person) {
+    return known(person?.state) && Number.isFinite(person?.attributes?.latitude) && Number.isFinite(person?.attributes?.longitude);
+  }
   function relativeUpdate(iso, now = Date.now()) {
     const time = Date.parse(iso);
     if (!Number.isFinite(time)) return void 0;
@@ -174,6 +177,7 @@
   }
   function personDetails(config, states, now = Date.now()) {
     const person = states?.[config.person];
+    const available = Boolean(person) && known(person.state);
     const source = states?.[person?.attributes?.source];
     const batteryState = config.battery_entity ? states?.[config.battery_entity] : void 0;
     const batteryRaw = known(batteryState?.state) ? batteryState.state : source?.attributes?.battery_level ?? source?.attributes?.battery;
@@ -187,13 +191,13 @@
       batteryTarget: config.battery_entity ?? person?.attributes?.source,
       sourceName: source?.attributes?.friendly_name,
       accuracy,
-      update: relativeUpdate(source?.last_updated ?? person?.last_updated, now),
-      presenceChanged: relativeUpdate(person?.last_changed, now)
+      update: available ? relativeUpdate(source?.last_updated ?? person?.last_updated, now) : void 0,
+      presenceChanged: available ? relativeUpdate(person?.last_changed, now) : void 0
     };
     return {
       name: config.name ?? person?.attributes?.friendly_name ?? config.person,
       place: placeLabel(person?.state),
-      available: Boolean(person) && known(person.state),
+      available,
       picture: person?.attributes?.entity_picture,
       ...values,
       sections: config.sections.map((section) => ({
@@ -224,7 +228,7 @@
         <div class="layout">
           <div class="map-pane"><div class="map-inner">
             <div class="map-host"></div>
-            <div class="map-status" role="status"><span>Loading map\u2026</span><button type="button" hidden>Try again</button></div>
+            <div class="map-status" role="status"><ha-icon icon="mdi:map-marker-off" hidden></ha-icon><span>Loading map\u2026</span><button type="button" hidden>Try again</button></div>
           </div></div>
           <div class="panel">
             <button class="person-heading" type="button">
@@ -244,6 +248,7 @@
       this._mapInner = this.shadowRoot.querySelector(".map-inner");
       this._mapHost = this.shadowRoot.querySelector(".map-host");
       this._mapStatus = this.shadowRoot.querySelector(".map-status");
+      this._mapStatusIcon = this._mapStatus.querySelector("ha-icon");
       this._mapStatusText = this._mapStatus.querySelector("span");
       this._retry = this._mapStatus.querySelector("button");
       this._heading = this.shadowRoot.querySelector(".person-heading");
@@ -268,17 +273,20 @@
       this._renderDetails();
       if (oldMapKey !== this._mapKey()) {
         this._request += 1;
+        clearTimeout(this._mapTimer);
         this._mapCard = void 0;
         this._mapSize = void 0;
+        this._canMap = void 0;
         this._mapHost.replaceChildren();
         this._showMapStatus("Loading map\u2026");
-        this._scheduleMap(true);
       }
+      this._syncMapAvailability();
     }
     set hass(hass) {
       this._hass = hass;
       if (this._mapCard) this._mapCard.hass = hass;
       this._renderDetails();
+      this._syncMapAvailability();
     }
     get hass() {
       return this._hass;
@@ -286,7 +294,8 @@
     connectedCallback() {
       this._resizeObserver = new ResizeObserver(() => this._scheduleMap());
       this._resizeObserver.observe(this._mapInner);
-      this._scheduleMap(true);
+      this._syncMapAvailability();
+      if (this._canMap) this._scheduleMap(true);
       this._clock = setInterval(() => this._renderDetails(), 6e4);
     }
     disconnectedCallback() {
@@ -312,12 +321,27 @@
     }
     _showMapStatus(message, retry = false) {
       this._mapStatusText.textContent = message;
+      this._mapStatusIcon.hidden = message !== "Location unavailable";
       this._mapStatus.hidden = false;
       this._retry.hidden = !retry;
     }
+    _syncMapAvailability() {
+      if (!this._config || !this._hass) return;
+      const canMap = personHasLocation(this._hass.states?.[this._config.person]);
+      if (canMap === this._canMap) return;
+      this._canMap = canMap;
+      this._request += 1;
+      clearTimeout(this._mapTimer);
+      this._mapTimer = void 0;
+      this._mapCard = void 0;
+      this._mapSize = void 0;
+      this._mapHost.replaceChildren();
+      this._showMapStatus(canMap ? "Loading map\u2026" : "Location unavailable");
+      if (canMap) this._scheduleMap(true);
+    }
     _scheduleMap(force = false) {
       clearTimeout(this._mapTimer);
-      if (!this.isConnected || !this._config) return;
+      if (!this.isConnected || !this._config || !this._canMap) return;
       const size = this._dimensions();
       if (size.width < 100 || size.height < 100) return;
       if (!force && this._mapCard && this._mapSize && Math.abs(this._mapSize.width - size.width) < 4 && Math.abs(this._mapSize.height - size.height) < 4) return;
@@ -325,6 +349,7 @@
       this._mapTimer = setTimeout(() => this._mountMap(request, size), 120);
     }
     async _mountMap(request, size) {
+      this._mapTimer = void 0;
       const current = () => this.isConnected && request === this._request;
       try {
         const helpers = await cardHelpers();

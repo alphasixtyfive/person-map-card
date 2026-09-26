@@ -126,6 +126,12 @@ export function placeLabel(state) {
   return String(state).replaceAll("_", " ");
 }
 
+export function personHasLocation(person) {
+  return known(person?.state)
+    && Number.isFinite(person?.attributes?.latitude)
+    && Number.isFinite(person?.attributes?.longitude);
+}
+
 export function relativeUpdate(iso, now = Date.now()) {
   const time = Date.parse(iso);
   if (!Number.isFinite(time)) return undefined;
@@ -180,6 +186,7 @@ function detailTile(row, values, states, personId) {
 
 export function personDetails(config, states, now = Date.now()) {
   const person = states?.[config.person];
+  const available = Boolean(person) && known(person.state);
   const source = states?.[person?.attributes?.source];
   const batteryState = config.battery_entity ? states?.[config.battery_entity] : undefined;
   const batteryRaw = known(batteryState?.state) ? batteryState.state : source?.attributes?.battery_level ?? source?.attributes?.battery;
@@ -195,13 +202,13 @@ export function personDetails(config, states, now = Date.now()) {
     batteryTarget: config.battery_entity ?? person?.attributes?.source,
     sourceName: source?.attributes?.friendly_name,
     accuracy,
-    update: relativeUpdate(source?.last_updated ?? person?.last_updated, now),
-    presenceChanged: relativeUpdate(person?.last_changed, now),
+    update: available ? relativeUpdate(source?.last_updated ?? person?.last_updated, now) : undefined,
+    presenceChanged: available ? relativeUpdate(person?.last_changed, now) : undefined,
   };
   return {
     name: config.name ?? person?.attributes?.friendly_name ?? config.person,
     place: placeLabel(person?.state),
-    available: Boolean(person) && known(person.state),
+    available,
     picture: person?.attributes?.entity_picture,
     ...values,
     sections: config.sections.map((section) => ({

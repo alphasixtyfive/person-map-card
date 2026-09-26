@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { normalizeConfig, personDetails, placeLabel, relativeUpdate } from "../src/model.js";
+import { normalizeConfig, personDetails, personHasLocation, placeLabel, relativeUpdate } from "../src/model.js";
 
 test("single person is enough to configure the card", () => {
   assert.deepEqual(normalizeConfig({ person: "person.example" }), {
@@ -71,6 +71,23 @@ test("explicit battery can override source and missing facts disappear", () => {
   assert.equal(result.update, undefined);
   assert.equal(result.sections[0].tiles[1].hidden, true);
   assert.equal(personDetails(config, {}).place, "Location unavailable");
+});
+
+test("missing person location hides the map and meaningless timestamps", () => {
+  const config = normalizeConfig({ person: "person.example" });
+  const person = {
+    state: "unknown",
+    last_changed: "2026-09-25T10:00:00Z",
+    last_updated: "2026-09-25T10:00:00Z",
+    attributes: { friendly_name: "Example" },
+  };
+  assert.equal(personHasLocation(person), false);
+  const details = personDetails(config, { "person.example": person }, Date.parse("2026-09-26T10:00:00Z"));
+  assert.equal(details.place, "Location unavailable");
+  assert.equal(details.update, undefined);
+  assert.equal(details.presenceChanged, undefined);
+  assert.equal(details.sections[0].tiles.some((tile) => !tile.hidden), false);
+  assert.equal(personHasLocation({ state: "home", attributes: { latitude: 51.5, longitude: -0.1 } }), true);
 });
 
 test("configured detail entities use their own state and missing values are clear", () => {

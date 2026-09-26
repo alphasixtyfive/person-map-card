@@ -73,6 +73,8 @@ ha-card {
   text-align: center;
 }
 
+.map-status ha-icon { --mdc-icon-size: 48px; }
+
 .map-status button {
   min-height: 44px;
   padding: 0 16px;
