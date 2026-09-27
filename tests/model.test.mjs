@@ -97,7 +97,7 @@ test("configured detail entities use their own state and missing values are clea
     "sensor.steps": { state: "2300.0", attributes: { unit_of_measurement: "steps" } },
   });
   assert.equal(result.place, "work");
-  assert.deepEqual(result.sections[0].tiles.slice(4).map((tile) => tile.value), ["2300 steps", "Unavailable"]);
+  assert.deepEqual(result.sections[0].tiles.slice(4).map((tile) => tile.value), [`${new Intl.NumberFormat().format(2300)} steps`, "Unavailable"]);
 });
 
 test("sections are an ordered full override with optional per-tile more-info", () => {

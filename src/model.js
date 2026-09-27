@@ -170,7 +170,8 @@ function detailTile(row, values, states, personId) {
   }
   const state = states?.[row.entity];
   const raw = state?.state;
-  const display = typeof raw === "string" && /^-?\d+\.0+$/.test(raw) ? raw.slice(0, raw.indexOf(".")) : raw;
+  const display = typeof raw === "string" && /^-?\d+(?:\.0+)?$/.test(raw)
+    ? new Intl.NumberFormat().format(Number(raw)) : raw;
   const value = known(raw)
     ? `${display}${state.attributes?.unit_of_measurement ? ` ${state.attributes.unit_of_measurement}` : ""}`
     : "Unavailable";

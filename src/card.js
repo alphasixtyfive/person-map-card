@@ -213,8 +213,8 @@ export class PersonMapCard extends HTMLElement {
         if (!tile.hidden) visible += 1;
         tile._target = item.target;
         tile.querySelector("ha-icon").setAttribute("icon", item.icon || "mdi:information-outline");
-        tile.querySelector("strong").textContent = item.value ?? "";
-        tile.querySelector("small").textContent = item.label ?? "";
+        tile.querySelector("strong").textContent = item.label ?? "";
+        tile.querySelector("small").textContent = item.value ?? "";
         if (interactive) tile.setAttribute("aria-label", `${item.label ?? "Detail"}: ${item.value ?? "Unavailable"}`);
       });
       while (grid.children.length > details.tiles.length) grid.lastElementChild.remove();

@@ -16,8 +16,6 @@ ha-card {
   height: calc(100dvh - 88px);
   min-height: 480px;
   overflow: hidden;
-  border: 1px solid var(--divider-color);
-  border-radius: 18px;
 }
 
 :host([full-view]) ha-card {
@@ -79,7 +77,7 @@ ha-card {
   min-height: 44px;
   padding: 0 16px;
   border: 1px solid var(--divider-color);
-  border-radius: 12px;
+  border-radius: var(--ha-border-radius-md, 12px);
   background: var(--card-background-color);
   color: var(--primary-text-color);
   font: inherit;
@@ -89,7 +87,7 @@ ha-card {
 .panel {
   min-width: 0;
   min-height: 0;
-  padding: 24px;
+  padding: 20px;
   overflow: auto;
   border-left: 1px solid var(--divider-color);
 }
@@ -100,13 +98,13 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 .person-heading {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
   min-height: 64px;
-  margin: 0 0 24px;
-  padding: 8px 16px;
+  margin: 0 0 20px;
+  padding: 8px 10px;
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--ha-border-radius-md, 12px);
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
@@ -115,9 +113,9 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 .avatar {
   display: grid;
   place-items: center;
-  flex: 0 0 52px;
-  width: 52px;
-  height: 52px;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
   overflow: hidden;
   border-radius: 50%;
   background: color-mix(in srgb, var(--primary-color) 14%, var(--card-background-color));
@@ -127,20 +125,20 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 .avatar ha-icon { --mdc-icon-size: 28px; }
 .identity { min-width: 0; flex: 1; }
-.identity strong { display: block; font-size: 20px; line-height: 26px; overflow-wrap: anywhere; }
+.identity strong { display: block; font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }
 .identity span { display: block; color: var(--secondary-text-color); font-size: 14px; line-height: 22px; }
 .chevron { flex: 0 0 auto; color: var(--secondary-text-color); --mdc-icon-size: 20px; }
 
 .section-label {
-  margin: 0 0 12px;
-  font-size: 15px;
+  margin: 0 0 10px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 20px;
   color: var(--primary-text-color);
 }
 
-.section + .section { margin-top: 22px; }
-.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.section + .section { margin-top: 20px; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .tiles > .tile:only-child { grid-column: 1 / -1; }
 .tile {
   display: flex;
@@ -148,34 +146,39 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   gap: 10px;
   width: 100%;
   min-width: 0;
-  min-height: 76px;
+  min-height: 68px;
   padding: 10px 12px;
-  border: 1px solid var(--divider-color);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--primary-text-color) 3%, var(--card-background-color));
+  border: 1px solid transparent;
+  border-radius: var(--ha-border-radius-md, 12px);
+  background: var(--ha-color-fill-neutral-quiet-resting, var(--secondary-background-color));
   color: var(--primary-text-color);
   text-align: left;
 }
 .tile-action { cursor: pointer; }
 .tile-action:hover, .person-heading:hover {
-  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));
+  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));
 }
 .tile ha-icon {
   display: grid;
   place-items: center;
-  flex: 0 0 36px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  color: var(--primary-color);
+  --mdc-icon-size: 20px;
+}
+.tile-action ha-icon {
+  flex-basis: 36px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   background: color-mix(in srgb, var(--primary-color) 12%, var(--card-background-color));
-  color: var(--primary-color);
-  --mdc-icon-size: 20px;
 }
 .tile span { display: block; min-width: 0; flex: 1; }
-.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 600; }
-.tile small { display: block; color: var(--secondary-text-color); font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }
+.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 500; }
+.tile small { display: block; color: var(--secondary-text-color); font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }
 
-.actions { margin-top: 22px; }
+.actions { margin-top: 20px; }
 .action-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .service-action {
   display: inline-flex;
@@ -184,13 +187,13 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   gap: 8px;
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--divider-color);
-  border-radius: 12px;
-  background: var(--card-background-color);
+  border: 0;
+  border-radius: var(--ha-border-radius-md, 12px);
+  background: var(--ha-color-fill-neutral-quiet-resting, var(--secondary-background-color));
   color: var(--primary-text-color);
 }
 .service-action:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--primary-text-color) 5%, var(--card-background-color));
+  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));
 }
 .service-action:disabled { cursor: default; opacity: .55; }
 .service-action ha-icon { color: var(--primary-color); --mdc-icon-size: 20px; }
