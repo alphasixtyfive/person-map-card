@@ -6,7 +6,10 @@
   container-type: inline-size;
 }
 
-:host([full-view]) { width: 100%; margin: 0; }
+:host([full-view]) {
+  width: calc(100% - 24px);
+  margin: 12px auto;
+}
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -19,11 +22,9 @@ ha-card {
 }
 
 :host([full-view]) ha-card {
-  height: calc(100dvh - 56px);
+  --ha-card-border-radius: var(--ha-border-radius-lg, 12px);
+  height: calc(100dvh - 80px);
   min-height: 0;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
 }
 
 .layout {
@@ -77,7 +78,7 @@ ha-card {
   min-height: 44px;
   padding: 0 16px;
   border: 1px solid var(--divider-color);
-  border-radius: var(--ha-border-radius-md, 12px);
+  border-radius: var(--ha-border-radius-pill, 9999px);
   background: var(--card-background-color);
   color: var(--primary-text-color);
   font: inherit;
@@ -104,7 +105,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   margin: 0 0 16px;
   padding: 8px 4px;
   border: 0;
-  border-radius: var(--ha-border-radius-md, 12px);
+  border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
@@ -150,7 +151,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   min-height: 60px;
   padding: 8px 10px;
   border: 1px solid var(--divider-color);
-  border-radius: var(--ha-border-radius-md, 12px);
+  border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
@@ -172,7 +173,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   flex: 0 0 32px;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--ha-tile-icon-border-radius, var(--ha-border-radius-sm, 8px));
   background: color-mix(in srgb, var(--tile-accent) 12%, var(--card-background-color));
   color: var(--tile-accent);
   --mdc-icon-size: 20px;
@@ -191,7 +192,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--divider-color);
-  border-radius: var(--ha-border-radius-md, 12px);
+  border-radius: var(--ha-border-radius-pill, 9999px);
   background: transparent;
   color: var(--primary-text-color);
 }
@@ -205,7 +206,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 
 @container (max-width: 720px) {
   ha-card { height: auto; min-height: 0; }
-  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }
+  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 80px); }
   .layout { display: block; height: auto; }
   .map-pane { height: clamp(320px, 45dvh, 500px); }
   .panel { border-left: 0; border-top: 1px solid var(--divider-color); }
