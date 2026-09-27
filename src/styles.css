@@ -155,10 +155,10 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   color: var(--primary-text-color);
   text-align: left;
 }
-.tile[data-color="green"] { --tile-accent: var(--green-color, var(--success-color)); }
-.tile[data-color="blue"] { --tile-accent: var(--blue-color, var(--info-color)); }
-.tile[data-color="amber"] { --tile-accent: var(--amber-color, var(--warning-color)); }
-.tile[data-color="red"] { --tile-accent: var(--red-color, var(--error-color)); }
+.tile[data-color="green"] { --tile-accent: var(--green-color, var(--success-color, var(--primary-color))); }
+.tile[data-color="blue"] { --tile-accent: var(--blue-color, var(--info-color, var(--primary-color))); }
+.tile[data-color="amber"] { --tile-accent: var(--amber-color, var(--warning-color, var(--primary-color))); }
+.tile[data-color="red"] { --tile-accent: var(--red-color, var(--error-color, var(--primary-color))); }
 .tile[data-color="pink"] { --tile-accent: var(--pink-color, var(--primary-color)); }
 .tile[data-color="purple"] { --tile-accent: var(--purple-color, var(--primary-color)); }
 .tile[data-color="teal"] { --tile-accent: var(--teal-color, var(--primary-color)); }
