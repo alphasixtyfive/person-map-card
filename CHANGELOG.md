@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7 — 27 September 2026
+
+- Keep embedded card and detail surfaces square.
+- In dedicated full-screen views, let detail corners follow the active Home Assistant card radius, including square-corner themes.
+
 ## 0.1.6 — 27 September 2026
 
 - Restore the edge-to-edge, square outer layout in dedicated panel views while retaining theme-shaped detail tiles and controls.

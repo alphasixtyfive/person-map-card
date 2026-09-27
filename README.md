@@ -34,7 +34,7 @@ That is enough to show a map, battery or tracking device, and the latest tracker
 | `hours_to_show` | Optional movement trail duration in hours; defaults to `0`, the native Map default. |
 | `default_zoom` | Optional native Map zoom level. |
 | `theme_mode` | Optional native Map theme: `auto`, `light`, or `dark`. |
-| `full_view` | Set `true` in a dedicated panel view to fill it edge to edge with square outer corners; embedded cards keep their theme-shaped edge. |
+| `full_view` | Set `true` in a dedicated panel view to fill it edge to edge with square outer corners and theme-shaped detail tiles. Embedded cards and tiles stay square. |
 
 By default, the panel displays a named location, phone battery (or tracker name when battery is absent), and the source tracker's most recent update. GPS accuracy and presence-change time remain available as optional built-in tiles. Add `tap_action: more-info` to an individual tile when that interaction is useful. The card shows no raw coordinates or street address unless you explicitly add an entity that provides one. Duration entities measured in minutes display as hours and minutes, so a sleep sensor can read `6 h 8 min` instead of `368 min`.
 
@@ -71,7 +71,7 @@ actions:
 
 Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, color, tap_action}`. Icon colors use Home Assistant theme variables, so they follow the active theme. Built-in details and common activity, sleep, health, and location icons receive distinct colors automatically. Set `color` on a tile to override its icon, using `primary`, `green`, `blue`, `amber`, `red`, `pink`, `purple`, or `teal` (for example, `color: purple` on an HRV tile). Tile surfaces, borders, and text continue to use the theme. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
 
-For a dedicated panel view, set `full_view: true` to fill the view edge to edge. The details inside retain theme-shaped tiles and controls. Leave it out when the card sits among other cards.
+For a dedicated panel view, set `full_view: true` to fill the view edge to edge. Detail tiles then follow the active Home Assistant card radius; a square-corner theme keeps them square. Leave it out when the card sits among other cards, where the card and its detail tiles stay square.
 
 ## Development
 

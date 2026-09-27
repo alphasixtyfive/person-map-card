@@ -4,11 +4,13 @@
   min-width: 0;
   margin: 16px auto;
   container-type: inline-size;
+  --person-detail-radius: 0;
 }
 
 :host([full-view]) {
   width: 100%;
   margin: 0;
+  --person-detail-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
 }
 
 * { box-sizing: border-box; }
@@ -19,6 +21,7 @@ ha-card {
   height: calc(100dvh - 88px);
   min-height: 480px;
   overflow: hidden;
+  border-radius: 0;
 }
 
 :host([full-view]) ha-card {
@@ -95,10 +98,6 @@ ha-card {
   border-left: 1px solid var(--divider-color);
 }
 
-:host([full-view]) .panel {
-  --ha-card-border-radius: var(--ha-border-radius-lg, 12px);
-}
-
 button { font: inherit; cursor: pointer; }
 button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
 
@@ -111,7 +110,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   margin: 0 0 16px;
   padding: 8px 4px;
   border: 0;
-  border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
+  border-radius: var(--person-detail-radius);
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
@@ -157,7 +156,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   min-height: 60px;
   padding: 8px 10px;
   border: 1px solid var(--divider-color);
-  border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
+  border-radius: var(--person-detail-radius);
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
