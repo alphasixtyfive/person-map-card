@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5 — 27 September 2026
+
+- Keep the full-view card inset so its corners remain visible, and use the Home Assistant theme's radius scale when panel views request square cards.
+- Shape detail tiles, icons, and action buttons with the corresponding Home Assistant theme variables.
+
 ## 0.1.4 — 27 September 2026
 
 - Keep the default person summary focused on battery and tracker freshness; GPS accuracy and presence-change time remain optional.
