@@ -12,9 +12,7 @@ test("single person is enough to configure the card", () => {
       title: "Details",
       tiles: [
         { type: "battery", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
-        { type: "gps_accuracy", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
         { type: "tracker_updated", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
-        { type: "presence_changed", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
       ],
     }],
     actions: [],
@@ -52,8 +50,8 @@ test("summary uses the person and source tracker without showing raw coordinates
   assert.equal(result.update, "5 min ago");
   assert.equal(result.presenceChanged, "1 h ago");
   assert.equal(result.sourceName, "Example's Phone");
-  assert.deepEqual(result.sections[0].tiles.map((tile) => tile.value), ["67%", "19 m", "5 min ago", "1 h ago"]);
-  assert.deepEqual(result.sections[0].tiles.map((tile) => tile.color), ["green", "blue", "amber", "purple"]);
+  assert.deepEqual(result.sections[0].tiles.map((tile) => tile.value), ["67%", "5 min ago"]);
+  assert.deepEqual(result.sections[0].tiles.map((tile) => tile.color), ["green", "amber"]);
   assert.ok(result.sections[0].tiles.every((tile) => tile.interactive === false));
   assert.doesNotMatch(JSON.stringify(result), /51\.5|-0\.1/);
 });
@@ -98,7 +96,22 @@ test("configured detail entities use their own state and missing values are clea
     "sensor.steps": { state: "2300.0", attributes: { unit_of_measurement: "steps" } },
   });
   assert.equal(result.place, "work");
-  assert.deepEqual(result.sections[0].tiles.slice(4).map((tile) => tile.value), [`${new Intl.NumberFormat().format(2300)} steps`, "Unavailable"]);
+  assert.deepEqual(result.sections[0].tiles.slice(2).map((tile) => tile.value), [`${new Intl.NumberFormat().format(2300)} steps`, "Unavailable"]);
+});
+
+test("duration sensors display sleep in hours and minutes", () => {
+  const config = normalizeConfig({
+    person: "person.example",
+    sections: [{ title: "Today", tiles: [
+      { entity: "sensor.sleep", label: "Last sleep", icon: "mdi:sleep" },
+    ] }],
+  });
+  const states = { "sensor.sleep": { state: "368.0", attributes: { device_class: "duration", unit_of_measurement: "min" } } };
+  const tile = personDetails(config, states).sections[0].tiles[0];
+  assert.equal(tile.value, "6 h 8 min");
+  assert.equal(tile.color, "blue");
+  states["sensor.sleep"].state = "unknown";
+  assert.equal(personDetails(config, states).sections[0].tiles[0].value, "Unavailable");
 });
 
 test("sections are an ordered full override with optional per-tile more-info", () => {

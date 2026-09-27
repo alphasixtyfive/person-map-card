@@ -7,11 +7,12 @@
   var entityId = /^[a-z0-9_]+\.[a-z0-9_]+$/;
   var mdiIcon = /^mdi:[a-z0-9-]+$/;
   var builtIns = /* @__PURE__ */ new Set(["battery", "gps_accuracy", "tracker_updated", "presence_changed"]);
-  var defaults = [...builtIns];
+  var defaults = ["battery", "tracker_updated"];
   var colors = /* @__PURE__ */ new Set(["primary", "green", "blue", "amber", "red", "pink", "purple", "teal"]);
   var builtInColors = { battery: "green", gps_accuracy: "blue", tracker_updated: "amber", presence_changed: "purple" };
   var iconColors = {
     "mdi:walk": "green",
+    "mdi:sleep": "blue",
     "mdi:heart-pulse": "red",
     "mdi:heart-outline": "pink",
     "mdi:lungs": "teal",
@@ -156,6 +157,19 @@
     const days = Math.floor(hours / 24);
     return `${days} d ago`;
   }
+  function entityValue(state) {
+    const raw = state?.state;
+    if (!known(raw)) return "Unavailable";
+    const unit = state.attributes?.unit_of_measurement;
+    if (state.attributes?.device_class === "duration" && unit === "min" && /^\d+(?:\.\d+)?$/.test(raw)) {
+      const total = Math.round(Number(raw));
+      const hours = Math.floor(total / 60);
+      const minutes = total % 60;
+      return hours ? `${hours} h${minutes ? ` ${minutes} min` : ""}` : `${minutes} min`;
+    }
+    const display = typeof raw === "string" && /^-?\d+(?:\.0+)?$/.test(raw) ? new Intl.NumberFormat().format(Number(raw)) : raw;
+    return `${display}${unit ? ` ${unit}` : ""}`;
+  }
   function detailTile(row, values, states, personId) {
     if (row.type) {
       const builtInValues = {
@@ -181,12 +195,9 @@
       };
     }
     const state = states?.[row.entity];
-    const raw = state?.state;
-    const display = typeof raw === "string" && /^-?\d+(?:\.0+)?$/.test(raw) ? new Intl.NumberFormat().format(Number(raw)) : raw;
-    const value = known(raw) ? `${display}${state.attributes?.unit_of_measurement ? ` ${state.attributes.unit_of_measurement}` : ""}` : "Unavailable";
     const icon = row.icon ?? state?.attributes?.icon ?? "mdi:information-outline";
     return {
-      value,
+      value: entityValue(state),
       label: row.label ?? state?.attributes?.friendly_name ?? row.entity,
       icon,
       color: row.color ?? iconColors[icon] ?? "primary",

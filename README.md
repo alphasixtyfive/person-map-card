@@ -19,7 +19,7 @@ type: custom:person-map-card
 person: person.example
 ```
 
-That is enough to show a map and the available person details. A missing battery or GPS reading is omitted. When a person has no usable location, the card shows a clear empty state in place of the map. Informational tiles do not open dialogs when tapped; the person heading opens native more-info.
+That is enough to show a map, battery or tracking device, and the latest tracker update when available. When a person has no usable location, the card shows a clear empty state in place of the map. Informational tiles do not open dialogs when tapped; the person heading opens native more-info.
 
 ## Options
 
@@ -36,7 +36,7 @@ That is enough to show a map and the available person details. A missing battery
 | `theme_mode` | Optional native Map theme: `auto`, `light`, or `dark`. |
 | `full_view` | Set `true` in a dedicated panel view to fill it edge to edge; embedded cards keep an inset, rounded edge by default. |
 
-By default, the panel displays a named location, phone battery (or tracker name when battery is absent), GPS accuracy, the source tracker's most recent update, and when the person's presence last changed. Add `tap_action: more-info` to an individual tile when that interaction is useful. The card shows no raw coordinates or street address unless you explicitly add an entity that provides one.
+By default, the panel displays a named location, phone battery (or tracker name when battery is absent), and the source tracker's most recent update. GPS accuracy and presence-change time remain available as optional built-in tiles. Add `tap_action: more-info` to an individual tile when that interaction is useful. The card shows no raw coordinates or street address unless you explicitly add an entity that provides one. Duration entities measured in minutes display as hours and minutes, so a sleep sensor can read `6 h 8 min` instead of `368 min`.
 
 ```yaml
 type: custom:person-map-card
@@ -47,9 +47,15 @@ sections:
   - title: Details
     tiles:
       - battery
-      - gps_accuracy
       - tracker_updated
-      - presence_changed
+  - title: Today
+    tiles:
+      - entity: sensor.example_steps
+        label: Steps
+        icon: mdi:walk
+      - entity: sensor.example_sleep_duration
+        label: Last sleep
+        icon: mdi:sleep
   - title: Location
     tiles:
       - entity: sensor.example_geocoded_location
@@ -63,7 +69,7 @@ actions:
       device: mobile_app_example_phone
 ```
 
-Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, color, tap_action}`. Icon colors use Home Assistant theme variables, so they follow the active theme. Built-in details and common activity, health, and location icons receive distinct colors automatically. Set `color` on a tile to override its icon, using `primary`, `green`, `blue`, `amber`, `red`, `pink`, `purple`, or `teal` (for example, `color: purple` on an HRV tile). Tile surfaces, borders, and text continue to use the theme. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
+Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, color, tap_action}`. Icon colors use Home Assistant theme variables, so they follow the active theme. Built-in details and common activity, sleep, health, and location icons receive distinct colors automatically. Set `color` on a tile to override its icon, using `primary`, `green`, `blue`, `amber`, `red`, `pink`, `purple`, or `teal` (for example, `color: purple` on an HRV tile). Tile surfaces, borders, and text continue to use the theme. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
 
 For a dedicated panel view, set `full_view: true` to let the card meet the view edges. Leave it out when the card sits among other cards.
 
