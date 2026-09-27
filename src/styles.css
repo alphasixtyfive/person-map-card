@@ -141,6 +141,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .tiles > .tile:only-child { grid-column: 1 / -1; }
 .tile {
+  --tile-accent: var(--primary-color);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -154,6 +155,13 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   color: var(--primary-text-color);
   text-align: left;
 }
+.tile[data-color="green"] { --tile-accent: var(--green-color, var(--success-color)); }
+.tile[data-color="blue"] { --tile-accent: var(--blue-color, var(--info-color)); }
+.tile[data-color="amber"] { --tile-accent: var(--amber-color, var(--warning-color)); }
+.tile[data-color="red"] { --tile-accent: var(--red-color, var(--error-color)); }
+.tile[data-color="pink"] { --tile-accent: var(--pink-color, var(--primary-color)); }
+.tile[data-color="purple"] { --tile-accent: var(--purple-color, var(--primary-color)); }
+.tile[data-color="teal"] { --tile-accent: var(--teal-color, var(--primary-color)); }
 .tile-action { cursor: pointer; }
 .tile-action:hover, .person-heading:hover {
   background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));
@@ -161,18 +169,13 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 .tile ha-icon {
   display: grid;
   place-items: center;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  color: var(--primary-color);
-  --mdc-icon-size: 20px;
-}
-.tile-action ha-icon {
-  flex-basis: 36px;
-  width: 36px;
-  height: 36px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--primary-color) 12%, var(--card-background-color));
+  background: color-mix(in srgb, var(--tile-accent) 12%, var(--card-background-color));
+  color: var(--tile-accent);
+  --mdc-icon-size: 20px;
 }
 .tile span { display: block; min-width: 0; flex: 1; }
 .tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 500; }

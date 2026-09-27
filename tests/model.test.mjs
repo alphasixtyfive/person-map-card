@@ -11,10 +11,10 @@ test("single person is enough to configure the card", () => {
     sections: [{
       title: "Details",
       tiles: [
-        { type: "battery", entity: undefined, label: undefined, icon: undefined, interactive: false },
-        { type: "gps_accuracy", entity: undefined, label: undefined, icon: undefined, interactive: false },
-        { type: "tracker_updated", entity: undefined, label: undefined, icon: undefined, interactive: false },
-        { type: "presence_changed", entity: undefined, label: undefined, icon: undefined, interactive: false },
+        { type: "battery", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
+        { type: "gps_accuracy", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
+        { type: "tracker_updated", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
+        { type: "presence_changed", entity: undefined, label: undefined, icon: undefined, color: undefined, interactive: false },
       ],
     }],
     actions: [],
@@ -53,6 +53,7 @@ test("summary uses the person and source tracker without showing raw coordinates
   assert.equal(result.presenceChanged, "1 h ago");
   assert.equal(result.sourceName, "Example's Phone");
   assert.deepEqual(result.sections[0].tiles.map((tile) => tile.value), ["67%", "19 m", "5 min ago", "1 h ago"]);
+  assert.deepEqual(result.sections[0].tiles.map((tile) => tile.color), ["green", "blue", "amber", "purple"]);
   assert.ok(result.sections[0].tiles.every((tile) => tile.interactive === false));
   assert.doesNotMatch(JSON.stringify(result), /51\.5|-0\.1/);
 });
@@ -125,6 +126,21 @@ test("sections are an ordered full override with optional per-tile more-info", (
   assert.deepEqual(details.sections.flatMap((section) => section.tiles.map((tile) => tile.interactive)), [false, false, true, true]);
   assert.equal(details.sections[0].tiles[0].target, "sensor.place");
   assert.equal(details.sections[1].tiles[0].target, "device_tracker.phone");
+});
+
+test("entity icon colors use HA theme roles and can be overridden per tile", () => {
+  const config = normalizeConfig({
+    person: "person.example",
+    sections: [{ title: "Health", tiles: [
+      { entity: "sensor.steps", icon: "mdi:walk" },
+      { entity: "sensor.heart", icon: "mdi:heart-pulse" },
+      { entity: "sensor.hrv", icon: "mdi:heart-pulse", color: "purple" },
+      { entity: "sensor.breathing", icon: "mdi:lungs" },
+    ] }],
+  });
+  const details = personDetails(config, {});
+  assert.deepEqual(details.sections[0].tiles.map((tile) => tile.color), ["green", "red", "purple", "teal"]);
+  assert.throws(() => normalizeConfig({ person: "person.example", sections: [{ tiles: [{ type: "battery", color: "magenta" }] }] }), /Tile color/);
 });
 
 test("actions are explicit and invalid tile or service config is rejected", () => {

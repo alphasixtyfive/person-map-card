@@ -212,6 +212,7 @@ export class PersonMapCard extends HTMLElement {
         tile.hidden = Boolean(item.hidden || item.value === undefined || item.value === null || item.value === "");
         if (!tile.hidden) visible += 1;
         tile._target = item.target;
+        tile.dataset.color = item.color;
         tile.querySelector("ha-icon").setAttribute("icon", item.icon || "mdi:information-outline");
         tile.querySelector("strong").textContent = item.label ?? "";
         tile.querySelector("small").textContent = item.value ?? "";

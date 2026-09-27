@@ -2,7 +2,23 @@ const entityId = /^[a-z0-9_]+\.[a-z0-9_]+$/;
 const mdiIcon = /^mdi:[a-z0-9-]+$/;
 const builtIns = new Set(["battery", "gps_accuracy", "tracker_updated", "presence_changed"]);
 const defaults = [...builtIns];
+const colors = new Set(["primary", "green", "blue", "amber", "red", "pink", "purple", "teal"]);
+const builtInColors = { battery: "green", gps_accuracy: "blue", tracker_updated: "amber", presence_changed: "purple" };
+const iconColors = {
+  "mdi:walk": "green",
+  "mdi:heart-pulse": "red",
+  "mdi:heart-outline": "pink",
+  "mdi:lungs": "teal",
+  "mdi:map-marker": "blue",
+};
 const known = (value) => value !== undefined && value !== null && value !== "" && value !== "unknown" && value !== "unavailable";
+
+function normalizeColor(color) {
+  if (color !== undefined && !colors.has(color)) {
+    throw new Error(`Tile color must be one of: ${[...colors].join(", ")}.`);
+  }
+  return color;
+}
 
 function normalizeTile(item) {
   const tile = typeof item === "string"
@@ -31,6 +47,7 @@ function normalizeTile(item) {
     entity: tile.entity,
     label: label?.trim(),
     icon: tile.icon,
+    color: normalizeColor(tile.color),
     interactive: tile.tap_action === "more-info" || tile.tap_action?.action === "more-info",
   };
 }
@@ -103,6 +120,7 @@ export function normalizeConfig(config) {
       entity: row.entity,
       name: typeof row.name === "string" && row.name.trim() ? row.name.trim() : undefined,
       icon: typeof row.icon === "string" && mdiIcon.test(row.icon) ? row.icon : undefined,
+      color: normalizeColor(row.color),
     };
   });
   return {
@@ -163,6 +181,7 @@ function detailTile(row, values, states, personId) {
       value: detail.value,
       label: row.label ?? detail.label,
       icon: row.icon ?? detail.icon,
+      color: row.color ?? builtInColors[row.type],
       target: detail.target,
       hidden: !known(detail.value),
       interactive: row.interactive,
@@ -175,10 +194,12 @@ function detailTile(row, values, states, personId) {
   const value = known(raw)
     ? `${display}${state.attributes?.unit_of_measurement ? ` ${state.attributes.unit_of_measurement}` : ""}`
     : "Unavailable";
+  const icon = row.icon ?? state?.attributes?.icon ?? "mdi:information-outline";
   return {
     value,
     label: row.label ?? state?.attributes?.friendly_name ?? row.entity,
-    icon: row.icon ?? state?.attributes?.icon ?? "mdi:information-outline",
+    icon,
+    color: row.color ?? iconColors[icon] ?? "primary",
     target: row.entity,
     hidden: false,
     interactive: row.interactive,

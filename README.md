@@ -63,7 +63,7 @@ actions:
       device: mobile_app_example_phone
 ```
 
-Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, tap_action}`. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
+Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, color, tap_action}`. Icon colors use Home Assistant theme variables, so they follow the active theme. Built-in details and common activity, health, and location icons receive distinct colors automatically. Set `color` on a tile to override its icon, using `primary`, `green`, `blue`, `amber`, `red`, `pink`, `purple`, or `teal` (for example, `color: purple` on an HRV tile). Tile surfaces, borders, and text continue to use the theme. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
 
 For a dedicated panel view, set `full_view: true` to let the card meet the view edges. Leave it out when the card sits among other cards.
 
