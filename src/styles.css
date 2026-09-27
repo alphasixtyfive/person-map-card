@@ -7,8 +7,8 @@
 }
 
 :host([full-view]) {
-  width: calc(100% - 24px);
-  margin: 12px auto;
+  width: 100%;
+  margin: 0;
 }
 
 * { box-sizing: border-box; }
@@ -22,9 +22,11 @@ ha-card {
 }
 
 :host([full-view]) ha-card {
-  --ha-card-border-radius: var(--ha-border-radius-lg, 12px);
-  height: calc(100dvh - 80px);
+  height: calc(100dvh - 56px);
   min-height: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .layout {
@@ -91,6 +93,10 @@ ha-card {
   padding: 16px;
   overflow: auto;
   border-left: 1px solid var(--divider-color);
+}
+
+:host([full-view]) .panel {
+  --ha-card-border-radius: var(--ha-border-radius-lg, 12px);
 }
 
 button { font: inherit; cursor: pointer; }
@@ -206,7 +212,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 
 @container (max-width: 720px) {
   ha-card { height: auto; min-height: 0; }
-  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 80px); }
+  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }
   .layout { display: block; height: auto; }
   .map-pane { height: clamp(320px, 45dvh, 500px); }
   .panel { border-left: 0; border-top: 1px solid var(--divider-color); }

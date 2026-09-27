@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6 — 27 September 2026
+
+- Restore the edge-to-edge, square outer layout in dedicated panel views while retaining theme-shaped detail tiles and controls.
+- Keep rounded outer corners on cards placed among other dashboard cards.
+
 ## 0.1.5 — 27 September 2026
 
 - Keep the full-view card inset so its corners remain visible, and use the Home Assistant theme's radius scale when panel views request square cards.
