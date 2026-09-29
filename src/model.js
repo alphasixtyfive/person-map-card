@@ -12,6 +12,7 @@ const iconColors = {
   "mdi:lungs": "teal",
   "mdi:map-marker": "blue",
 };
+const defaultPeriods = [24, 72, 168];
 const known = (value) => value !== undefined && value !== null && value !== "" && value !== "unknown" && value !== "unavailable";
 
 function normalizeColor(color) {
@@ -99,6 +100,10 @@ export function normalizeConfig(config) {
   if (!Number.isInteger(hours) || hours < 0) {
     throw new Error("hours_to_show must be a non-negative whole number.");
   }
+  const periods = config.periods ?? defaultPeriods;
+  if (!Array.isArray(periods) || !periods.length || periods.some((value) => !Number.isInteger(value) || value <= 0)) {
+    throw new Error("periods must be a non-empty list of positive whole hours.");
+  }
   const zoom = config.default_zoom;
   if (zoom !== undefined && (!Number.isInteger(zoom) || zoom < 0 || zoom > 22)) {
     throw new Error("default_zoom must be a whole number from 0 to 22.");
@@ -132,6 +137,7 @@ export function normalizeConfig(config) {
     sections: normalizeSections(config.sections, entities),
     actions: normalizeActions(config.actions),
     hours_to_show: hours,
+    periods: [...new Set([0, ...periods, hours])].sort((a, b) => a - b),
     default_zoom: zoom,
     theme_mode: config.theme_mode,
     full_view: config.full_view ?? false,
@@ -179,6 +185,12 @@ function entityValue(state) {
   return `${display}${unit ? ` ${unit}` : ""}`;
 }
 
+function batteryPercent(raw) {
+  const value = Number(raw);
+  return known(raw) && Number.isFinite(value) && value >= 0 && value <= 100
+    ? `${Math.round(value)}%` : undefined;
+}
+
 function detailTile(row, values, states, personId) {
   if (row.type) {
     const builtInValues = {
@@ -221,17 +233,16 @@ export function personDetails(config, states, now = Date.now()) {
   const available = Boolean(person) && known(person.state);
   const source = states?.[person?.attributes?.source];
   const batteryState = config.battery_entity ? states?.[config.battery_entity] : undefined;
-  const batteryRaw = known(batteryState?.state) ? batteryState.state : source?.attributes?.battery_level ?? source?.attributes?.battery;
-  const batteryValue = Number(batteryRaw);
-  const battery = known(batteryRaw) && Number.isFinite(batteryValue) && batteryValue >= 0 && batteryValue <= 100
-    ? `${Math.round(batteryValue)}%` : undefined;
+  const explicitBattery = batteryPercent(batteryState?.state);
+  const sourceBattery = batteryPercent(source?.attributes?.battery_level) ?? batteryPercent(source?.attributes?.battery);
+  const battery = explicitBattery ?? sourceBattery;
   const accuracyRaw = source?.attributes?.gps_accuracy ?? person?.attributes?.gps_accuracy;
   const accuracyValue = Number(accuracyRaw);
   const accuracy = known(accuracyRaw) && Number.isFinite(accuracyValue) && accuracyValue >= 0
     ? `${Math.round(accuracyValue)} m` : undefined;
   const values = {
     battery,
-    batteryTarget: config.battery_entity ?? person?.attributes?.source,
+    batteryTarget: explicitBattery ? config.battery_entity : person?.attributes?.source,
     sourceName: source?.attributes?.friendly_name,
     accuracy,
     update: available ? relativeUpdate(source?.last_updated ?? person?.last_updated, now) : undefined,

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.8 — 29 September 2026
+
+- Add a compact Trail bar with no trail, 24 hours, 72 hours, and 7 days, backed by Home Assistant's native Map card.
+- Restore the original pill style of the action and retry buttons.
+- Keep only the full-view outer card square; let embedded cards and detail tiles follow the Home Assistant theme.
+- Keep the native map in place as the screen resizes, and make Trail choices easier to tap.
+- Let a lone detail tile fill its row and keep battery links, action feedback, and avatars accurate when their sources change.
+
 ## 0.1.7 — 27 September 2026
 
 - Keep embedded card and detail surfaces square.

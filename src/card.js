@@ -12,6 +12,18 @@ function cardHelpers() {
   return helpersPromise;
 }
 
+function periodLabel(hours) {
+  if (hours === 0) return "No trail";
+  if (hours >= 168 && hours % 24 === 0) return `${hours / 24} days`;
+  return `${hours} hour${hours === 1 ? "" : "s"}`;
+}
+
+function periodShortLabel(hours) {
+  if (hours === 0) return "Off";
+  if (hours >= 168 && hours % 24 === 0) return `${hours / 24}d`;
+  return `${hours}h`;
+}
+
 export class PersonMapCard extends HTMLElement {
   constructor() {
     super();
@@ -23,6 +35,7 @@ export class PersonMapCard extends HTMLElement {
           <div class="map-pane"><div class="map-inner">
             <div class="map-host"></div>
             <div class="map-status" role="status"><ha-icon icon="mdi:map-marker-off" hidden></ha-icon><span>Loading map…</span><button type="button" hidden>Try again</button></div>
+            <div class="period-control" role="group" aria-label="Movement trail"><span class="period-label">Trail</span><div class="period-options"></div></div>
           </div></div>
           <div class="panel">
             <button class="person-heading" type="button">
@@ -39,12 +52,12 @@ export class PersonMapCard extends HTMLElement {
           </div>
         </div>
       </ha-card>`;
-    this._mapInner = this.shadowRoot.querySelector(".map-inner");
     this._mapHost = this.shadowRoot.querySelector(".map-host");
     this._mapStatus = this.shadowRoot.querySelector(".map-status");
     this._mapStatusIcon = this._mapStatus.querySelector("ha-icon");
     this._mapStatusText = this._mapStatus.querySelector("span");
     this._retry = this._mapStatus.querySelector("button");
+    this._periodOptions = this.shadowRoot.querySelector(".period-options");
     this._heading = this.shadowRoot.querySelector(".person-heading");
     this._name = this._heading.querySelector("strong");
     this._place = this._heading.querySelector(".identity span");
@@ -54,23 +67,40 @@ export class PersonMapCard extends HTMLElement {
     this._actions = this.shadowRoot.querySelector(".actions");
     this._actionList = this._actions.querySelector(".action-list");
     this._actionFeedback = this._actions.querySelector(".action-feedback");
-    this._retry.addEventListener("click", () => this._scheduleMap(true));
+    this._retry.addEventListener("click", () => this._mountMap());
     this._heading.addEventListener("click", () => this._moreInfo(this._config?.person));
+    this._avatar.addEventListener("error", () => {
+      this._brokenPicture = this._avatar.getAttribute("src");
+      this._avatar.hidden = true;
+      this._avatarIcon.hidden = false;
+    });
     this._request = 0;
+    this._actionsRevision = 0;
   }
 
   setConfig(input) {
     const config = normalizeConfig(input);
     const oldMapKey = this._mapKey();
+    if (this._config?.person !== config.person || this._config?.hours_to_show !== config.hours_to_show || !config.periods.includes(this._period)) {
+      this._period = config.hours_to_show;
+    }
     this._config = config;
+    this._periodOptions.replaceChildren(...config.periods.map((hours) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.period = String(hours);
+      button.textContent = periodShortLabel(hours);
+      button.setAttribute("aria-label", periodLabel(hours));
+      button.setAttribute("aria-pressed", String(hours === this._period));
+      button.addEventListener("click", () => this._selectPeriod(hours));
+      return button;
+    }));
     this.toggleAttribute("full-view", config.full_view);
     this._renderActions();
     this._renderDetails();
     if (oldMapKey !== this._mapKey()) {
       this._request += 1;
-      clearTimeout(this._mapTimer);
       this._mapCard = undefined;
-      this._mapSize = undefined;
       this._canMap = undefined;
       this._mapHost.replaceChildren();
       this._showMapStatus("Loading map…");
@@ -87,32 +117,36 @@ export class PersonMapCard extends HTMLElement {
   get hass() { return this._hass; }
 
   connectedCallback() {
-    this._resizeObserver = new ResizeObserver(() => this._scheduleMap());
-    this._resizeObserver.observe(this._mapInner);
+    const hadLocation = this._canMap;
     this._syncMapAvailability();
-    if (this._canMap) this._scheduleMap(true);
+    if (hadLocation && this._canMap && !this._mapCard) this._mountMap();
     this._clock = setInterval(() => this._renderDetails(), 60_000);
   }
 
   disconnectedCallback() {
-    this._resizeObserver?.disconnect();
-    this._resizeObserver = undefined;
-    clearTimeout(this._mapTimer);
     clearInterval(this._clock);
     this._request += 1;
+    this._actionsRevision += 1;
+    this._mapCard = undefined;
+    this._mapHost.replaceChildren();
+    this._showMapStatus(this._canMap ? "Loading map…" : "Location unavailable");
   }
 
   getCardSize() { return 10; }
   getGridOptions() { return { columns: 12, rows: "auto", min_columns: 6 }; }
 
-  _mapKey() {
-    const c = this._config;
-    return c && JSON.stringify([c.person, c.hours_to_show, c.default_zoom, c.theme_mode]);
+  _selectPeriod(hours) {
+    if (!this._config?.periods.includes(hours) || hours === this._period) return;
+    this._period = hours;
+    this._periodOptions.querySelectorAll("button").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.period === String(hours)));
+    });
+    this._mountMap();
   }
 
-  _dimensions() {
-    const rect = this._mapInner.getBoundingClientRect();
-    return { width: Math.round(rect.width), height: Math.round(rect.height) };
+  _mapKey() {
+    const c = this._config;
+    return c && JSON.stringify([c.person, this._period, c.default_zoom, c.theme_mode]);
   }
 
   _showMapStatus(message, retry = false) {
@@ -128,41 +162,23 @@ export class PersonMapCard extends HTMLElement {
     if (canMap === this._canMap) return;
     this._canMap = canMap;
     this._request += 1;
-    clearTimeout(this._mapTimer);
-    this._mapTimer = undefined;
     this._mapCard = undefined;
-    this._mapSize = undefined;
     this._mapHost.replaceChildren();
     this._showMapStatus(canMap ? "Loading map…" : "Location unavailable");
-    if (canMap) this._scheduleMap(true);
+    if (canMap) this._mountMap();
   }
 
-  _scheduleMap(force = false) {
-    clearTimeout(this._mapTimer);
+  async _mountMap() {
     if (!this.isConnected || !this._config || !this._canMap) return;
-    const size = this._dimensions();
-    if (size.width < 100 || size.height < 100) return;
-    if (!force && this._mapCard && this._mapSize && Math.abs(this._mapSize.width - size.width) < 4 && Math.abs(this._mapSize.height - size.height) < 4) return;
     const request = ++this._request;
-    this._mapTimer = setTimeout(() => this._mountMap(request, size), 120);
-  }
-
-  async _mountMap(request, size) {
-    this._mapTimer = undefined;
     const current = () => this.isConnected && request === this._request;
     try {
       const helpers = await cardHelpers();
       if (!current()) return;
-      const latest = this._dimensions();
-      if (Math.abs(latest.width - size.width) >= 4 || Math.abs(latest.height - size.height) >= 4) {
-        this._scheduleMap();
-        return;
-      }
       const mapConfig = {
         type: "map",
         entities: [this._config.person],
-        hours_to_show: this._config.hours_to_show,
-        aspect_ratio: `${Math.round((1000 * size.height) / size.width) / 10}%`,
+        hours_to_show: this._period,
         auto_fit: true,
         fit_zones: false,
       };
@@ -170,10 +186,11 @@ export class PersonMapCard extends HTMLElement {
       if (this._config.theme_mode !== undefined) mapConfig.theme_mode = this._config.theme_mode;
       const card = await helpers.createCardElement(mapConfig);
       if (!current()) return;
+      // Native grid layout fills the map pane and handles its own resizes.
+      card.layout = "grid";
       if (this._hass) card.hass = this._hass;
       this._mapHost.replaceChildren(card);
       this._mapCard = card;
-      this._mapSize = size;
       this._mapStatus.hidden = true;
     } catch (_error) {
       if (current()) this._showMapStatus("Map unavailable", true);
@@ -219,12 +236,16 @@ export class PersonMapCard extends HTMLElement {
         if (interactive) tile.setAttribute("aria-label", `${item.label ?? "Detail"}: ${item.value ?? "Unavailable"}`);
       });
       while (grid.children.length > details.tiles.length) grid.lastElementChild.remove();
+      grid.querySelectorAll(".tile").forEach((tile) => {
+        tile.classList.toggle("tile-full", visible === 1 && !tile.hidden);
+      });
       section.hidden = visible === 0;
     });
     while (this._sections.children.length > sections.length) this._sections.lastElementChild.remove();
   }
 
   _renderActions() {
+    const revision = ++this._actionsRevision;
     const actions = this._config.actions ?? [];
     this._actions.hidden = actions.length === 0;
     this._actionList.replaceChildren();
@@ -244,9 +265,9 @@ export class PersonMapCard extends HTMLElement {
         this._actionFeedback.textContent = "";
         try {
           await this._hass.callService(domain, service, action.data ?? {});
-          this._actionFeedback.textContent = `${action.label} started`;
+          if (revision === this._actionsRevision) this._actionFeedback.textContent = `${action.label} started`;
         } catch (_error) {
-          this._actionFeedback.textContent = `Could not run ${action.label.toLowerCase()}`;
+          if (revision === this._actionsRevision) this._actionFeedback.textContent = `Could not run ${action.label.toLowerCase()}`;
         } finally {
           button.disabled = false;
           button.removeAttribute("aria-busy");
@@ -262,10 +283,16 @@ export class PersonMapCard extends HTMLElement {
     this._name.textContent = details.name;
     this._place.textContent = details.place;
     this._heading.setAttribute("aria-label", `${details.name}, ${details.place}. More information`);
-    this._avatar.hidden = !details.picture;
-    this._avatarIcon.hidden = Boolean(details.picture);
-    if (details.picture && this._avatar.getAttribute("src") !== details.picture) this._avatar.src = details.picture;
-    if (!details.picture) this._avatar.removeAttribute("src");
+    if (details.picture && this._avatar.getAttribute("src") !== details.picture) {
+      this._brokenPicture = undefined;
+      this._avatar.src = details.picture;
+    }
+    if (!details.picture) {
+      this._avatar.removeAttribute("src");
+      this._brokenPicture = undefined;
+    }
+    this._avatar.hidden = !details.picture || details.picture === this._brokenPicture;
+    this._avatarIcon.hidden = !this._avatar.hidden;
     this._syncSections(details.sections);
   }
 

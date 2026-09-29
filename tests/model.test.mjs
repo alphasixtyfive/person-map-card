@@ -17,12 +17,15 @@ test("single person is enough to configure the card", () => {
     }],
     actions: [],
     hours_to_show: 0,
+    periods: [0, 24, 72, 168],
     default_zoom: undefined,
     theme_mode: undefined,
     full_view: false,
   });
   assert.throws(() => normalizeConfig({ person: "sensor.example" }), /person entity/);
   assert.throws(() => normalizeConfig({ person: "person.example", hours_to_show: -1 }), /non-negative/);
+  assert.deepEqual(normalizeConfig({ person: "person.example", hours_to_show: 48, periods: [72, 24, 336, 72] }).periods, [0, 24, 48, 72, 336]);
+  assert.throws(() => normalizeConfig({ person: "person.example", periods: [24, -1] }), /periods/);
   assert.equal(normalizeConfig({ person: "person.example", full_view: true }).full_view, true);
   assert.throws(() => normalizeConfig({ person: "person.example", full_view: "yes" }), /full_view/);
 });
@@ -70,6 +73,31 @@ test("explicit battery can override source and missing facts disappear", () => {
   assert.equal(result.update, undefined);
   assert.equal(result.sections[0].tiles[1].hidden, true);
   assert.equal(personDetails(config, {}).place, "Location unavailable");
+});
+
+test("battery detail opens the entity that supplied its displayed value", () => {
+  const config = normalizeConfig({
+    person: "person.example",
+    battery_entity: "sensor.phone_battery",
+    sections: [{ tiles: [{ type: "battery", tap_action: "more-info" }] }],
+  });
+  const states = {
+    "person.example": { state: "home", attributes: { source: "device_tracker.phone" } },
+    "device_tracker.phone": { state: "home", attributes: { battery_level: 42 } },
+    "sensor.phone_battery": { state: "83", attributes: {} },
+  };
+  const batteryTile = () => personDetails(config, states).sections[0].tiles[0];
+
+  assert.equal(batteryTile().value, "83%");
+  assert.equal(batteryTile().target, "sensor.phone_battery");
+
+  states["sensor.phone_battery"].state = "unavailable";
+  assert.equal(batteryTile().value, "42%");
+  assert.equal(batteryTile().target, "device_tracker.phone");
+
+  states["sensor.phone_battery"].state = "not-a-number";
+  assert.equal(batteryTile().value, "42%");
+  assert.equal(batteryTile().target, "device_tracker.phone");
 });
 
 test("missing person location hides the map and meaningless timestamps", () => {

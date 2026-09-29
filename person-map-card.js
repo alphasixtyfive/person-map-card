@@ -1,7 +1,7 @@
 /* Generated from src/. Edit the source files, then run npm run build. */
 (() => {
   // src/styles.css
-  var styles_default = ':host {\n  display: block;\n  width: calc(100% - 32px);\n  min-width: 0;\n  margin: 16px auto;\n  container-type: inline-size;\n  --person-detail-radius: 0;\n}\n\n:host([full-view]) {\n  width: 100%;\n  margin: 0;\n  --person-detail-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));\n}\n\n* { box-sizing: border-box; }\n[hidden] { display: none !important; }\n\nha-card {\n  display: block;\n  height: calc(100dvh - 88px);\n  min-height: 480px;\n  overflow: hidden;\n  border-radius: 0;\n}\n\n:host([full-view]) ha-card {\n  height: calc(100dvh - 56px);\n  min-height: 0;\n  border: 0;\n  border-radius: 0;\n  box-shadow: none;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) clamp(320px, 36%, 410px);\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n}\n\n.map-pane {\n  min-width: 0;\n  min-height: 0;\n}\n\n.map-inner {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n  overflow: hidden;\n  background: var(--primary-background-color);\n}\n\n.map-host {\n  --ha-card-border-radius: 0;\n  --ha-card-border-width: 0;\n  --ha-card-box-shadow: none;\n}\n\n.map-host, .map-host > * {\n  display: block;\n  width: 100%;\n}\n\n.map-status {\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-content: center;\n  justify-items: center;\n  gap: 12px;\n  padding: 24px;\n  color: var(--secondary-text-color);\n  text-align: center;\n}\n\n.map-status ha-icon { --mdc-icon-size: 48px; }\n\n.map-status button {\n  min-height: 44px;\n  padding: 0 16px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--ha-border-radius-pill, 9999px);\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n  font: inherit;\n  cursor: pointer;\n}\n\n.panel {\n  min-width: 0;\n  min-height: 0;\n  padding: 16px;\n  overflow: auto;\n  border-left: 1px solid var(--divider-color);\n}\n\nbutton { font: inherit; cursor: pointer; }\nbutton:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }\n\n.person-heading {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 64px;\n  margin: 0 0 16px;\n  padding: 8px 4px;\n  border: 0;\n  border-radius: var(--person-detail-radius);\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n\n.avatar {\n  display: grid;\n  place-items: center;\n  flex: 0 0 48px;\n  width: 48px;\n  height: 48px;\n  overflow: hidden;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-background-color));\n  color: var(--primary-color);\n}\n\n.avatar img { width: 100%; height: 100%; object-fit: cover; }\n.avatar ha-icon { --mdc-icon-size: 28px; }\n.identity { min-width: 0; flex: 1; }\n.identity strong { display: block; font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }\n.identity span { display: block; color: var(--secondary-text-color); font-size: 14px; line-height: 22px; }\n.chevron { flex: 0 0 auto; color: var(--secondary-text-color); --mdc-icon-size: 20px; }\n\n.section-label {\n  margin: 0 0 8px;\n  font-size: 14px;\n  font-weight: 600;\n  line-height: 20px;\n  color: var(--primary-text-color);\n}\n\n.section + .section { margin-top: 16px; }\n.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }\n.tiles > .tile:only-child { grid-column: 1 / -1; }\n.tile {\n  --tile-accent: var(--primary-color);\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-width: 0;\n  min-height: 60px;\n  padding: 8px 10px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--person-detail-radius);\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n.tile[data-color="green"] { --tile-accent: var(--green-color, var(--success-color, var(--primary-color))); }\n.tile[data-color="blue"] { --tile-accent: var(--blue-color, var(--info-color, var(--primary-color))); }\n.tile[data-color="amber"] { --tile-accent: var(--amber-color, var(--warning-color, var(--primary-color))); }\n.tile[data-color="red"] { --tile-accent: var(--red-color, var(--error-color, var(--primary-color))); }\n.tile[data-color="pink"] { --tile-accent: var(--pink-color, var(--primary-color)); }\n.tile[data-color="purple"] { --tile-accent: var(--purple-color, var(--primary-color)); }\n.tile[data-color="teal"] { --tile-accent: var(--teal-color, var(--primary-color)); }\n.tile-action { cursor: pointer; }\n.tile-action:hover, .person-heading:hover {\n  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));\n}\n.tile ha-icon {\n  display: grid;\n  place-items: center;\n  flex: 0 0 32px;\n  width: 32px;\n  height: 32px;\n  border-radius: var(--ha-tile-icon-border-radius, var(--ha-border-radius-sm, 8px));\n  background: color-mix(in srgb, var(--tile-accent) 12%, var(--card-background-color));\n  color: var(--tile-accent);\n  --mdc-icon-size: 20px;\n}\n.tile span { display: block; min-width: 0; flex: 1; }\n.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 500; }\n.tile small { display: block; color: var(--secondary-text-color); font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }\n\n.actions { margin-top: 16px; }\n.action-list { display: flex; flex-wrap: wrap; gap: 8px; }\n.service-action {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  min-height: 44px;\n  padding: 0 14px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--ha-border-radius-pill, 9999px);\n  background: transparent;\n  color: var(--primary-text-color);\n}\n.service-action:hover:not(:disabled) {\n  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));\n}\n.service-action:disabled { cursor: default; opacity: .55; }\n.service-action ha-icon { color: var(--primary-color); --mdc-icon-size: 20px; }\n.action-feedback { margin: 8px 0 0; color: var(--secondary-text-color); font-size: 12px; }\n.action-feedback:empty { display: none; }\n\n@container (max-width: 720px) {\n  ha-card { height: auto; min-height: 0; }\n  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }\n  .layout { display: block; height: auto; }\n  .map-pane { height: clamp(320px, 45dvh, 500px); }\n  .panel { border-left: 0; border-top: 1px solid var(--divider-color); }\n  .person-heading { margin-bottom: 16px; }\n}\n\n@container (max-width: 360px) {\n  .tiles { gap: 8px; }\n  .tile { padding: 8px; }\n}\n';
+  var styles_default = ':host {\n  display: block;\n  width: calc(100% - 32px);\n  min-width: 0;\n  margin: 16px auto;\n  container-type: inline-size;\n  --person-surface-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));\n}\n\n:host([full-view]) {\n  width: 100%;\n  margin: 0;\n  /* HA panel views set --ha-card-border-radius to 0. */\n  --person-surface-radius: var(--ha-border-radius-lg, 12px);\n}\n\n* { box-sizing: border-box; }\n[hidden] { display: none !important; }\n\nha-card {\n  display: block;\n  height: calc(100dvh - 88px);\n  min-height: 480px;\n  overflow: hidden;\n  border-radius: var(--person-surface-radius);\n}\n\n:host([full-view]) ha-card {\n  height: calc(100dvh - 56px);\n  min-height: 0;\n  border: 0;\n  border-radius: 0;\n  box-shadow: none;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) clamp(320px, 36%, 410px);\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n}\n\n.map-pane {\n  min-width: 0;\n  min-height: 0;\n}\n\n.map-inner {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n  overflow: hidden;\n  background: var(--primary-background-color);\n}\n\n.map-host {\n  --ha-card-border-radius: 0;\n  --ha-card-border-width: 0;\n  --ha-card-box-shadow: none;\n}\n\n.map-host, .map-host > * {\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\n.period-control {\n  position: absolute;\n  top: 12px;\n  right: 12px;\n  z-index: 2;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  min-height: 44px;\n  max-width: calc(100% - 24px);\n  padding: 3px 4px 3px 10px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--ha-button-border-radius, var(--ha-border-radius-md, 8px));\n  background: var(--ha-card-background, var(--card-background-color));\n  color: var(--primary-text-color);\n  font: inherit;\n  font-size: 13px;\n}\n\n.period-label {\n  color: var(--secondary-text-color);\n  font-weight: 500;\n}\n\n.period-options {\n  display: flex;\n  gap: 2px;\n  min-width: 0;\n  overflow-x: auto;\n}\n\n.period-options button {\n  min-width: 44px;\n  min-height: 44px;\n  padding: 0 8px;\n  border: 0;\n  border-radius: var(--ha-border-radius-sm, 6px);\n  background: transparent;\n  color: var(--secondary-text-color);\n  font: inherit;\n  cursor: pointer;\n}\n\n.period-options button[aria-pressed="true"] {\n  background: color-mix(in srgb, var(--primary-color) 16%, var(--ha-card-background, var(--card-background-color)));\n  color: var(--primary-color);\n  font-weight: 600;\n}\n\n.period-options button:hover:not([aria-pressed="true"]) {\n  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));\n  color: var(--primary-text-color);\n}\n\n.period-options button:focus-visible {\n  outline: 2px solid var(--primary-color);\n  outline-offset: -2px;\n}\n\n.map-status {\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-content: center;\n  justify-items: center;\n  gap: 12px;\n  padding: 24px;\n  color: var(--secondary-text-color);\n  text-align: center;\n}\n\n.map-status ha-icon { --mdc-icon-size: 48px; }\n\n.map-status button {\n  min-height: 44px;\n  padding: 0 16px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--ha-border-radius-pill, 9999px);\n  background: var(--card-background-color);\n  color: var(--primary-text-color);\n  font: inherit;\n  cursor: pointer;\n}\n\n.panel {\n  min-width: 0;\n  min-height: 0;\n  padding: 16px;\n  overflow: auto;\n  border-left: 1px solid var(--divider-color);\n}\n\nbutton { font: inherit; cursor: pointer; }\nbutton:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }\n\n.person-heading {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 64px;\n  margin: 0 0 16px;\n  padding: 8px 4px;\n  border: 0;\n  border-radius: var(--person-surface-radius);\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n\n.avatar {\n  display: grid;\n  place-items: center;\n  flex: 0 0 48px;\n  width: 48px;\n  height: 48px;\n  overflow: hidden;\n  border-radius: 50%;\n  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-background-color));\n  color: var(--primary-color);\n}\n\n.avatar img { width: 100%; height: 100%; object-fit: cover; }\n.avatar ha-icon { --mdc-icon-size: 28px; }\n.identity { min-width: 0; flex: 1; }\n.identity strong { display: block; font-size: 18px; line-height: 24px; overflow-wrap: anywhere; }\n.identity span { display: block; color: var(--secondary-text-color); font-size: 14px; line-height: 22px; }\n.chevron { flex: 0 0 auto; color: var(--secondary-text-color); --mdc-icon-size: 20px; }\n\n.section-label {\n  margin: 0 0 8px;\n  font-size: 14px;\n  font-weight: 600;\n  line-height: 20px;\n  color: var(--primary-text-color);\n}\n\n.section + .section { margin-top: 16px; }\n.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }\n.tiles > .tile-full { grid-column: 1 / -1; }\n.tile {\n  --tile-accent: var(--primary-color);\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-width: 0;\n  min-height: 60px;\n  padding: 8px 10px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--person-surface-radius);\n  background: transparent;\n  color: var(--primary-text-color);\n  text-align: left;\n}\n.tile[data-color="green"] { --tile-accent: var(--green-color, var(--success-color, var(--primary-color))); }\n.tile[data-color="blue"] { --tile-accent: var(--blue-color, var(--info-color, var(--primary-color))); }\n.tile[data-color="amber"] { --tile-accent: var(--amber-color, var(--warning-color, var(--primary-color))); }\n.tile[data-color="red"] { --tile-accent: var(--red-color, var(--error-color, var(--primary-color))); }\n.tile[data-color="pink"] { --tile-accent: var(--pink-color, var(--primary-color)); }\n.tile[data-color="purple"] { --tile-accent: var(--purple-color, var(--primary-color)); }\n.tile[data-color="teal"] { --tile-accent: var(--teal-color, var(--primary-color)); }\n.tile-action { cursor: pointer; }\n.tile-action:hover, .person-heading:hover {\n  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));\n}\n.tile ha-icon {\n  display: grid;\n  place-items: center;\n  flex: 0 0 32px;\n  width: 32px;\n  height: 32px;\n  border-radius: var(--ha-tile-icon-border-radius, var(--ha-border-radius-sm, 8px));\n  background: color-mix(in srgb, var(--tile-accent) 12%, var(--card-background-color));\n  color: var(--tile-accent);\n  --mdc-icon-size: 20px;\n}\n.tile span { display: block; min-width: 0; flex: 1; }\n.tile strong { display: block; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; font-weight: 500; }\n.tile small { display: block; color: var(--secondary-text-color); font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }\n\n.actions { margin-top: 16px; }\n.action-list { display: flex; flex-wrap: wrap; gap: 8px; }\n.service-action {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  min-height: 44px;\n  padding: 0 14px;\n  border: 1px solid var(--divider-color);\n  border-radius: var(--ha-border-radius-pill, 9999px);\n  background: transparent;\n  color: var(--primary-text-color);\n}\n.service-action:hover:not(:disabled) {\n  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));\n}\n.service-action:disabled { cursor: default; opacity: .55; }\n.service-action ha-icon { color: var(--primary-color); --mdc-icon-size: 20px; }\n.action-feedback { margin: 8px 0 0; color: var(--secondary-text-color); font-size: 12px; }\n.action-feedback:empty { display: none; }\n\n@container (max-width: 720px) {\n  ha-card { height: auto; min-height: 0; }\n  :host([full-view]) ha-card { height: auto; min-height: calc(100dvh - 56px); }\n  .layout { display: block; height: auto; }\n  .map-pane { height: clamp(320px, 45dvh, 500px); }\n  .panel { border-left: 0; border-top: 1px solid var(--divider-color); }\n  .person-heading { margin-bottom: 16px; }\n}\n\n@container (max-width: 360px) {\n  .tiles { gap: 8px; }\n  .tile { padding: 8px; }\n}\n';
 
   // src/model.js
   var entityId = /^[a-z0-9_]+\.[a-z0-9_]+$/;
@@ -18,6 +18,7 @@
     "mdi:lungs": "teal",
     "mdi:map-marker": "blue"
   };
+  var defaultPeriods = [24, 72, 168];
   var known = (value) => value !== void 0 && value !== null && value !== "" && value !== "unknown" && value !== "unavailable";
   function normalizeColor(color) {
     if (color !== void 0 && !colors.has(color)) {
@@ -98,6 +99,10 @@
     if (!Number.isInteger(hours) || hours < 0) {
       throw new Error("hours_to_show must be a non-negative whole number.");
     }
+    const periods = config.periods ?? defaultPeriods;
+    if (!Array.isArray(periods) || !periods.length || periods.some((value) => !Number.isInteger(value) || value <= 0)) {
+      throw new Error("periods must be a non-empty list of positive whole hours.");
+    }
     const zoom = config.default_zoom;
     if (zoom !== void 0 && (!Number.isInteger(zoom) || zoom < 0 || zoom > 22)) {
       throw new Error("default_zoom must be a whole number from 0 to 22.");
@@ -131,6 +136,7 @@
       sections: normalizeSections(config.sections, entities),
       actions: normalizeActions(config.actions),
       hours_to_show: hours,
+      periods: [.../* @__PURE__ */ new Set([0, ...periods, hours])].sort((a, b) => a - b),
       default_zoom: zoom,
       theme_mode: config.theme_mode,
       full_view: config.full_view ?? false
@@ -169,6 +175,10 @@
     }
     const display = typeof raw === "string" && /^-?\d+(?:\.0+)?$/.test(raw) ? new Intl.NumberFormat().format(Number(raw)) : raw;
     return `${display}${unit ? ` ${unit}` : ""}`;
+  }
+  function batteryPercent(raw) {
+    const value = Number(raw);
+    return known(raw) && Number.isFinite(value) && value >= 0 && value <= 100 ? `${Math.round(value)}%` : void 0;
   }
   function detailTile(row, values, states, personId) {
     if (row.type) {
@@ -211,15 +221,15 @@
     const available = Boolean(person) && known(person.state);
     const source = states?.[person?.attributes?.source];
     const batteryState = config.battery_entity ? states?.[config.battery_entity] : void 0;
-    const batteryRaw = known(batteryState?.state) ? batteryState.state : source?.attributes?.battery_level ?? source?.attributes?.battery;
-    const batteryValue = Number(batteryRaw);
-    const battery = known(batteryRaw) && Number.isFinite(batteryValue) && batteryValue >= 0 && batteryValue <= 100 ? `${Math.round(batteryValue)}%` : void 0;
+    const explicitBattery = batteryPercent(batteryState?.state);
+    const sourceBattery = batteryPercent(source?.attributes?.battery_level) ?? batteryPercent(source?.attributes?.battery);
+    const battery = explicitBattery ?? sourceBattery;
     const accuracyRaw = source?.attributes?.gps_accuracy ?? person?.attributes?.gps_accuracy;
     const accuracyValue = Number(accuracyRaw);
     const accuracy = known(accuracyRaw) && Number.isFinite(accuracyValue) && accuracyValue >= 0 ? `${Math.round(accuracyValue)} m` : void 0;
     const values = {
       battery,
-      batteryTarget: config.battery_entity ?? person?.attributes?.source,
+      batteryTarget: explicitBattery ? config.battery_entity : person?.attributes?.source,
       sourceName: source?.attributes?.friendly_name,
       accuracy,
       update: available ? relativeUpdate(source?.last_updated ?? person?.last_updated, now) : void 0,
@@ -249,6 +259,16 @@
     }
     return helpersPromise;
   }
+  function periodLabel(hours) {
+    if (hours === 0) return "No trail";
+    if (hours >= 168 && hours % 24 === 0) return `${hours / 24} days`;
+    return `${hours} hour${hours === 1 ? "" : "s"}`;
+  }
+  function periodShortLabel(hours) {
+    if (hours === 0) return "Off";
+    if (hours >= 168 && hours % 24 === 0) return `${hours / 24}d`;
+    return `${hours}h`;
+  }
   var PersonMapCard = class extends HTMLElement {
     constructor() {
       super();
@@ -260,6 +280,7 @@
           <div class="map-pane"><div class="map-inner">
             <div class="map-host"></div>
             <div class="map-status" role="status"><ha-icon icon="mdi:map-marker-off" hidden></ha-icon><span>Loading map\u2026</span><button type="button" hidden>Try again</button></div>
+            <div class="period-control" role="group" aria-label="Movement trail"><span class="period-label">Trail</span><div class="period-options"></div></div>
           </div></div>
           <div class="panel">
             <button class="person-heading" type="button">
@@ -276,12 +297,12 @@
           </div>
         </div>
       </ha-card>`;
-      this._mapInner = this.shadowRoot.querySelector(".map-inner");
       this._mapHost = this.shadowRoot.querySelector(".map-host");
       this._mapStatus = this.shadowRoot.querySelector(".map-status");
       this._mapStatusIcon = this._mapStatus.querySelector("ha-icon");
       this._mapStatusText = this._mapStatus.querySelector("span");
       this._retry = this._mapStatus.querySelector("button");
+      this._periodOptions = this.shadowRoot.querySelector(".period-options");
       this._heading = this.shadowRoot.querySelector(".person-heading");
       this._name = this._heading.querySelector("strong");
       this._place = this._heading.querySelector(".identity span");
@@ -291,22 +312,39 @@
       this._actions = this.shadowRoot.querySelector(".actions");
       this._actionList = this._actions.querySelector(".action-list");
       this._actionFeedback = this._actions.querySelector(".action-feedback");
-      this._retry.addEventListener("click", () => this._scheduleMap(true));
+      this._retry.addEventListener("click", () => this._mountMap());
       this._heading.addEventListener("click", () => this._moreInfo(this._config?.person));
+      this._avatar.addEventListener("error", () => {
+        this._brokenPicture = this._avatar.getAttribute("src");
+        this._avatar.hidden = true;
+        this._avatarIcon.hidden = false;
+      });
       this._request = 0;
+      this._actionsRevision = 0;
     }
     setConfig(input) {
       const config = normalizeConfig(input);
       const oldMapKey = this._mapKey();
+      if (this._config?.person !== config.person || this._config?.hours_to_show !== config.hours_to_show || !config.periods.includes(this._period)) {
+        this._period = config.hours_to_show;
+      }
       this._config = config;
+      this._periodOptions.replaceChildren(...config.periods.map((hours) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.period = String(hours);
+        button.textContent = periodShortLabel(hours);
+        button.setAttribute("aria-label", periodLabel(hours));
+        button.setAttribute("aria-pressed", String(hours === this._period));
+        button.addEventListener("click", () => this._selectPeriod(hours));
+        return button;
+      }));
       this.toggleAttribute("full-view", config.full_view);
       this._renderActions();
       this._renderDetails();
       if (oldMapKey !== this._mapKey()) {
         this._request += 1;
-        clearTimeout(this._mapTimer);
         this._mapCard = void 0;
-        this._mapSize = void 0;
         this._canMap = void 0;
         this._mapHost.replaceChildren();
         this._showMapStatus("Loading map\u2026");
@@ -323,18 +361,18 @@
       return this._hass;
     }
     connectedCallback() {
-      this._resizeObserver = new ResizeObserver(() => this._scheduleMap());
-      this._resizeObserver.observe(this._mapInner);
+      const hadLocation = this._canMap;
       this._syncMapAvailability();
-      if (this._canMap) this._scheduleMap(true);
+      if (hadLocation && this._canMap && !this._mapCard) this._mountMap();
       this._clock = setInterval(() => this._renderDetails(), 6e4);
     }
     disconnectedCallback() {
-      this._resizeObserver?.disconnect();
-      this._resizeObserver = void 0;
-      clearTimeout(this._mapTimer);
       clearInterval(this._clock);
       this._request += 1;
+      this._actionsRevision += 1;
+      this._mapCard = void 0;
+      this._mapHost.replaceChildren();
+      this._showMapStatus(this._canMap ? "Loading map\u2026" : "Location unavailable");
     }
     getCardSize() {
       return 10;
@@ -342,13 +380,17 @@
     getGridOptions() {
       return { columns: 12, rows: "auto", min_columns: 6 };
     }
+    _selectPeriod(hours) {
+      if (!this._config?.periods.includes(hours) || hours === this._period) return;
+      this._period = hours;
+      this._periodOptions.querySelectorAll("button").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.period === String(hours)));
+      });
+      this._mountMap();
+    }
     _mapKey() {
       const c = this._config;
-      return c && JSON.stringify([c.person, c.hours_to_show, c.default_zoom, c.theme_mode]);
-    }
-    _dimensions() {
-      const rect = this._mapInner.getBoundingClientRect();
-      return { width: Math.round(rect.width), height: Math.round(rect.height) };
+      return c && JSON.stringify([c.person, this._period, c.default_zoom, c.theme_mode]);
     }
     _showMapStatus(message, retry = false) {
       this._mapStatusText.textContent = message;
@@ -362,39 +404,22 @@
       if (canMap === this._canMap) return;
       this._canMap = canMap;
       this._request += 1;
-      clearTimeout(this._mapTimer);
-      this._mapTimer = void 0;
       this._mapCard = void 0;
-      this._mapSize = void 0;
       this._mapHost.replaceChildren();
       this._showMapStatus(canMap ? "Loading map\u2026" : "Location unavailable");
-      if (canMap) this._scheduleMap(true);
+      if (canMap) this._mountMap();
     }
-    _scheduleMap(force = false) {
-      clearTimeout(this._mapTimer);
+    async _mountMap() {
       if (!this.isConnected || !this._config || !this._canMap) return;
-      const size = this._dimensions();
-      if (size.width < 100 || size.height < 100) return;
-      if (!force && this._mapCard && this._mapSize && Math.abs(this._mapSize.width - size.width) < 4 && Math.abs(this._mapSize.height - size.height) < 4) return;
       const request = ++this._request;
-      this._mapTimer = setTimeout(() => this._mountMap(request, size), 120);
-    }
-    async _mountMap(request, size) {
-      this._mapTimer = void 0;
       const current = () => this.isConnected && request === this._request;
       try {
         const helpers = await cardHelpers();
         if (!current()) return;
-        const latest = this._dimensions();
-        if (Math.abs(latest.width - size.width) >= 4 || Math.abs(latest.height - size.height) >= 4) {
-          this._scheduleMap();
-          return;
-        }
         const mapConfig = {
           type: "map",
           entities: [this._config.person],
-          hours_to_show: this._config.hours_to_show,
-          aspect_ratio: `${Math.round(1e3 * size.height / size.width) / 10}%`,
+          hours_to_show: this._period,
           auto_fit: true,
           fit_zones: false
         };
@@ -402,10 +427,10 @@
         if (this._config.theme_mode !== void 0) mapConfig.theme_mode = this._config.theme_mode;
         const card = await helpers.createCardElement(mapConfig);
         if (!current()) return;
+        card.layout = "grid";
         if (this._hass) card.hass = this._hass;
         this._mapHost.replaceChildren(card);
         this._mapCard = card;
-        this._mapSize = size;
         this._mapStatus.hidden = true;
       } catch (_error) {
         if (current()) this._showMapStatus("Map unavailable", true);
@@ -450,11 +475,15 @@
           if (interactive) tile.setAttribute("aria-label", `${item.label ?? "Detail"}: ${item.value ?? "Unavailable"}`);
         });
         while (grid.children.length > details.tiles.length) grid.lastElementChild.remove();
+        grid.querySelectorAll(".tile").forEach((tile) => {
+          tile.classList.toggle("tile-full", visible === 1 && !tile.hidden);
+        });
         section.hidden = visible === 0;
       });
       while (this._sections.children.length > sections.length) this._sections.lastElementChild.remove();
     }
     _renderActions() {
+      const revision = ++this._actionsRevision;
       const actions = this._config.actions ?? [];
       this._actions.hidden = actions.length === 0;
       this._actionList.replaceChildren();
@@ -474,9 +503,9 @@
           this._actionFeedback.textContent = "";
           try {
             await this._hass.callService(domain, service, action.data ?? {});
-            this._actionFeedback.textContent = `${action.label} started`;
+            if (revision === this._actionsRevision) this._actionFeedback.textContent = `${action.label} started`;
           } catch (_error) {
-            this._actionFeedback.textContent = `Could not run ${action.label.toLowerCase()}`;
+            if (revision === this._actionsRevision) this._actionFeedback.textContent = `Could not run ${action.label.toLowerCase()}`;
           } finally {
             button.disabled = false;
             button.removeAttribute("aria-busy");
@@ -491,10 +520,16 @@
       this._name.textContent = details.name;
       this._place.textContent = details.place;
       this._heading.setAttribute("aria-label", `${details.name}, ${details.place}. More information`);
-      this._avatar.hidden = !details.picture;
-      this._avatarIcon.hidden = Boolean(details.picture);
-      if (details.picture && this._avatar.getAttribute("src") !== details.picture) this._avatar.src = details.picture;
-      if (!details.picture) this._avatar.removeAttribute("src");
+      if (details.picture && this._avatar.getAttribute("src") !== details.picture) {
+        this._brokenPicture = void 0;
+        this._avatar.src = details.picture;
+      }
+      if (!details.picture) {
+        this._avatar.removeAttribute("src");
+        this._brokenPicture = void 0;
+      }
+      this._avatar.hidden = !details.picture || details.picture === this._brokenPicture;
+      this._avatarIcon.hidden = !this._avatar.hidden;
       this._syncSections(details.sections);
     }
     _moreInfo(target) {

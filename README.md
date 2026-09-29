@@ -31,10 +31,11 @@ That is enough to show a map, battery or tracking device, and the latest tracker
 | `sections` | Optional ordered groups of built-in or entity tiles. Replaces the default Details group. |
 | `actions` | Optional service buttons. Each has `label`, `service`, and optional `icon` and `data`. |
 | `entities` | Short list of extra entity tiles in the default Details group. Use `sections` for multiple groups. |
-| `hours_to_show` | Optional movement trail duration in hours; defaults to `0`, the native Map default. |
+| `hours_to_show` | Initial movement trail duration in hours; defaults to `0` (no trail). |
+| `periods` | Optional positive whole-hour choices for the map selector. Defaults to `24`, `72`, and `168`; the no-trail option and initial duration are included automatically. |
 | `default_zoom` | Optional native Map zoom level. |
 | `theme_mode` | Optional native Map theme: `auto`, `light`, or `dark`. |
-| `full_view` | Set `true` in a dedicated panel view to fill it edge to edge with square outer corners and theme-shaped detail tiles. Embedded cards and tiles stay square. |
+| `full_view` | Set `true` in a dedicated panel view to fill it edge to edge with square outer corners. Embedded outer cards and detail tiles follow the theme. |
 
 By default, the panel displays a named location, phone battery (or tracker name when battery is absent), and the source tracker's most recent update. GPS accuracy and presence-change time remain available as optional built-in tiles. Add `tap_action: more-info` to an individual tile when that interaction is useful. The card shows no raw coordinates or street address unless you explicitly add an entity that provides one. Duration entities measured in minutes display as hours and minutes, so a sleep sensor can read `6 h 8 min` instead of `368 min`.
 
@@ -71,7 +72,9 @@ actions:
 
 Built-in tile names are `battery`, `gps_accuracy`, `tracker_updated`, and `presence_changed`. A tile can also use an entity ID as a string, or `{entity, label, icon, color, tap_action}`. Icon colors use Home Assistant theme variables, so they follow the active theme. Built-in details and common activity, sleep, health, and location icons receive distinct colors automatically. Set `color` on a tile to override its icon, using `primary`, `green`, `blue`, `amber`, `red`, `pink`, `purple`, or `teal` (for example, `color: purple` on an HRV tile). Tile surfaces, borders, and text continue to use the theme. Actions call the named Home Assistant service only when tapped. The example action requires a script you define; the card does not install one.
 
-For a dedicated panel view, set `full_view: true` to fill the view edge to edge. Detail tiles then follow the active Home Assistant card radius; a square-corner theme keeps them square. Leave it out when the card sits among other cards, where the card and its detail tiles stay square.
+For a dedicated panel view, set `full_view: true` to fill the view edge to edge with square outer corners. Detail tiles follow the active Home Assistant theme in either layout, including square-corner themes. Leave `full_view` out when the card sits among other cards; its outer corners then follow the theme too.
+
+The **Trail** bar offers **Off**, **24h**, **72h**, and **7d** by default. Changing it passes the chosen `hours_to_show` to Home Assistant's [native Map card](https://www.home-assistant.io/dashboards/map/); the person and their location history remain owned by Home Assistant. Longer choices can be added with `periods`, subject to the location history retained by Recorder.
 
 ## Development
 

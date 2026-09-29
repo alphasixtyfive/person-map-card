@@ -4,13 +4,14 @@
   min-width: 0;
   margin: 16px auto;
   container-type: inline-size;
-  --person-detail-radius: 0;
+  --person-surface-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
 }
 
 :host([full-view]) {
   width: 100%;
   margin: 0;
-  --person-detail-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
+  /* HA panel views set --ha-card-border-radius to 0. */
+  --person-surface-radius: var(--ha-border-radius-lg, 12px);
 }
 
 * { box-sizing: border-box; }
@@ -21,7 +22,7 @@ ha-card {
   height: calc(100dvh - 88px);
   min-height: 480px;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: var(--person-surface-radius);
 }
 
 :host([full-view]) ha-card {
@@ -63,6 +64,66 @@ ha-card {
 .map-host, .map-host > * {
   display: block;
   width: 100%;
+  height: 100%;
+}
+
+.period-control {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  max-width: calc(100% - 24px);
+  padding: 3px 4px 3px 10px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--ha-button-border-radius, var(--ha-border-radius-md, 8px));
+  background: var(--ha-card-background, var(--card-background-color));
+  color: var(--primary-text-color);
+  font: inherit;
+  font-size: 13px;
+}
+
+.period-label {
+  color: var(--secondary-text-color);
+  font-weight: 500;
+}
+
+.period-options {
+  display: flex;
+  gap: 2px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.period-options button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ha-border-radius-sm, 6px);
+  background: transparent;
+  color: var(--secondary-text-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.period-options button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--primary-color) 16%, var(--ha-card-background, var(--card-background-color)));
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.period-options button:hover:not([aria-pressed="true"]) {
+  background: var(--ha-color-fill-neutral-quiet-hover, var(--secondary-background-color));
+  color: var(--primary-text-color);
+}
+
+.period-options button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
 }
 
 .map-status {
@@ -110,7 +171,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   margin: 0 0 16px;
   padding: 8px 4px;
   border: 0;
-  border-radius: var(--person-detail-radius);
+  border-radius: var(--person-surface-radius);
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
@@ -145,7 +206,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 
 .section + .section { margin-top: 16px; }
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.tiles > .tile:only-child { grid-column: 1 / -1; }
+.tiles > .tile-full { grid-column: 1 / -1; }
 .tile {
   --tile-accent: var(--primary-color);
   display: flex;
@@ -156,7 +217,7 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
   min-height: 60px;
   padding: 8px 10px;
   border: 1px solid var(--divider-color);
-  border-radius: var(--person-detail-radius);
+  border-radius: var(--person-surface-radius);
   background: transparent;
   color: var(--primary-text-color);
   text-align: left;
