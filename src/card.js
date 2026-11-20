@@ -1,5 +1,5 @@
 import css from "./styles.css";
-import { normalizeConfig, personDetails, personHasLocation } from "./model.js";
+import { normalizeConfig, personDetails, personHasLocation, streetViewUrl } from "./model.js";
 
 let helpersPromise;
 function cardHelpers() {
@@ -44,9 +44,12 @@ export class PersonMapCard extends HTMLElement {
               <ha-icon class="chevron" icon="mdi:chevron-right" aria-hidden="true"></ha-icon>
             </button>
             <div class="sections"></div>
-            <section class="actions" hidden>
+            <section class="actions">
               <h2 class="section-label">Actions</h2>
-              <div class="action-list"></div>
+              <div class="action-list">
+                <ha-button class="street-view" appearance="outlined" variant="neutral" disabled><ha-icon slot="start" icon="mdi:google-street-view" aria-hidden="true"></ha-icon>Street View</ha-button>
+                <div class="service-actions"></div>
+              </div>
               <p class="action-feedback" role="status" aria-live="polite"></p>
             </section>
           </div>
@@ -65,7 +68,9 @@ export class PersonMapCard extends HTMLElement {
     this._avatarIcon = this._heading.querySelector(".avatar ha-icon");
     this._sections = this.shadowRoot.querySelector(".sections");
     this._actions = this.shadowRoot.querySelector(".actions");
-    this._actionList = this._actions.querySelector(".action-list");
+    this._actionList = this._actions.querySelector(".service-actions");
+    this._streetView = this._actions.querySelector(".street-view");
+    this._streetView.addEventListener("click", () => this._openStreetView());
     this._actionFeedback = this._actions.querySelector(".action-feedback");
     this._retry.addEventListener("click", () => this._mountMap());
     this._heading.addEventListener("click", () => this._moreInfo(this._config?.person));
@@ -85,6 +90,10 @@ export class PersonMapCard extends HTMLElement {
       this._period = config.hours_to_show;
     }
     this._config = config;
+    this._detailEntities = [...new Set([
+      config.battery_entity,
+      ...config.sections.flatMap((section) => section.tiles.map((tile) => tile.entity)),
+    ].filter(Boolean))];
     this._periodOptions.replaceChildren(...config.periods.map((hours) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -109,10 +118,20 @@ export class PersonMapCard extends HTMLElement {
   }
 
   set hass(hass) {
+    const previous = this._hass?.states;
     this._hass = hass;
     if (this._mapCard) this._mapCard.hass = hass;
-    this._renderDetails();
-    this._syncMapAvailability();
+    if (!this._config) return;
+
+    const states = hass?.states;
+    const person = this._config.person;
+    const locationChanged = !previous || previous[person] !== states?.[person];
+    const source = states?.[person]?.attributes?.source;
+    if (locationChanged || (source && previous[source] !== states?.[source]) ||
+        this._detailEntities.some((id) => previous[id] !== states?.[id])) {
+      this._renderDetails();
+    }
+    if (locationChanged) this._syncMapAvailability();
   }
   get hass() { return this._hass; }
 
@@ -141,12 +160,30 @@ export class PersonMapCard extends HTMLElement {
     this._periodOptions.querySelectorAll("button").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.period === String(hours)));
     });
-    this._mountMap();
+    if (this._mapCard) {
+      this._mapCard.setConfig(this._mapConfig());
+      this._mapStatus.hidden = true;
+    } else {
+      this._mountMap();
+    }
   }
 
   _mapKey() {
     const c = this._config;
     return c && JSON.stringify([c.person, this._period, c.default_zoom, c.theme_mode]);
+  }
+
+  _mapConfig() {
+    const { person, default_zoom, theme_mode } = this._config;
+    return {
+      type: "map",
+      entities: [person],
+      hours_to_show: this._period,
+      auto_fit: true,
+      fit_zones: false,
+      ...(default_zoom === undefined ? {} : { default_zoom }),
+      ...(theme_mode === undefined ? {} : { theme_mode }),
+    };
   }
 
   _showMapStatus(message, retry = false) {
@@ -175,16 +212,7 @@ export class PersonMapCard extends HTMLElement {
     try {
       const helpers = await cardHelpers();
       if (!current()) return;
-      const mapConfig = {
-        type: "map",
-        entities: [this._config.person],
-        hours_to_show: this._period,
-        auto_fit: true,
-        fit_zones: false,
-      };
-      if (this._config.default_zoom !== undefined) mapConfig.default_zoom = this._config.default_zoom;
-      if (this._config.theme_mode !== undefined) mapConfig.theme_mode = this._config.theme_mode;
-      const card = await helpers.createCardElement(mapConfig);
+      const card = await helpers.createCardElement(this._mapConfig());
       if (!current()) return;
       // Native grid layout fills the map pane and handles its own resizes.
       card.layout = "grid";
@@ -247,7 +275,6 @@ export class PersonMapCard extends HTMLElement {
   _renderActions() {
     const revision = ++this._actionsRevision;
     const actions = this._config.actions ?? [];
-    this._actions.hidden = actions.length === 0;
     this._actionList.replaceChildren();
     this._actionFeedback.textContent = "";
     actions.forEach((action) => {
@@ -279,6 +306,8 @@ export class PersonMapCard extends HTMLElement {
 
   _renderDetails() {
     if (!this._config) return;
+    this._streetView.disabled = !personHasLocation(this._hass?.states?.[this._config.person]);
+    this._streetView.title = this._streetView.disabled ? "Location unavailable" : "Open this location in Google Street View";
     const details = personDetails(this._config, this._hass?.states);
     this._name.textContent = details.name;
     this._place.textContent = details.place;
@@ -304,5 +333,10 @@ export class PersonMapCard extends HTMLElement {
       composed: true,
       detail: { entityId },
     }));
+  }
+
+  _openStreetView() {
+    const url = streetViewUrl(this._hass?.states?.[this._config?.person]);
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
   }
 }

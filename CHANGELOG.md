@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.9 — 20 November 2026
+
+- Change the trail period on the existing native map.
+- Refresh details when the person, their tracker, or a configured sensor changes.
+- Open Google Street View for the current person location when available.
+
 ## 0.1.8 — 29 September 2026
 
 - Add a compact Trail bar with no trail, 24 hours, 72 hours, and 7 days, backed by Home Assistant's native Map card.

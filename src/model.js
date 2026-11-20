@@ -157,6 +157,12 @@ export function personHasLocation(person) {
     && Number.isFinite(person?.attributes?.longitude);
 }
 
+export function streetViewUrl(person) {
+  if (!personHasLocation(person)) return undefined;
+  const { latitude, longitude } = person.attributes;
+  return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${encodeURIComponent(`${latitude},${longitude}`)}`;
+}
+
 export function relativeUpdate(iso, now = Date.now()) {
   const time = Date.parse(iso);
   if (!Number.isFinite(time)) return undefined;

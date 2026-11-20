@@ -250,6 +250,8 @@ button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 
 
 .actions { margin-top: 16px; }
 .action-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.service-actions { display: contents; }
+.street-view { --ha-button-height: 44px; }
 .service-action {
   display: inline-flex;
   align-items: center;

@@ -76,6 +76,8 @@ For a dedicated panel view, set `full_view: true` to fill the view edge to edge 
 
 The **Trail** bar offers **Off**, **24h**, **72h**, and **7d** by default. Changing it passes the chosen `hours_to_show` to Home Assistant's [native Map card](https://www.home-assistant.io/dashboards/map/); the person and their location history remain owned by Home Assistant. Longer choices can be added with `periods`, subject to the location history retained by Recorder.
 
+The **Street View** action opens Google Maps at the person's latest reported location in a new tab. It is disabled when that location is unavailable. Google selects the nearest available panorama, so imagery may be near the point rather than exactly on it. Coordinates are sent to Google only when the button is tapped.
+
 ## Development
 
 The maintained source is in `src/`. Run `npm ci`, `npm run build`, and `npm test`. The generated `person-map-card.js` in the repository root is the file installed by HACS; there are no runtime dependencies.
